@@ -1,64 +1,115 @@
 /**
- * 올타(OLTA) 실시간 멀티플레이어 서버
+ * 올타(OLTA) 실시간 멀티플레이어 서버 v2
  * - Express: public/ 폴더(게임 화면)를 서빙
- * - Socket.io: 접속 / 이동 / 채팅 / 퇴장을 모든 접속자에게 실시간 중계
+ * - Socket.io: 접속 / 이동 / 채팅 / 퇴장 + 친구 / 친구 상점 방문 / 방명록
  *
  * 실행:  npm install  →  npm start
  * 포트:  process.env.PORT (없으면 3000)
+ *
+ * ※ 친구 목록·방명록은 서버 메모리에 저장하고, 같은 폴더의 olta-data.json에도 저장해 둬요.
+ *   (Render 무료 플랜은 서버가 잠들거나 재배포되면 이 파일이 사라질 수 있어요)
  */
 const path = require('path');
 const http = require('http');
+const fs = require('fs');
+const crypto = require('crypto');
 const express = require('express');
 const { Server } = require('socket.io');
 
 const PORT = process.env.PORT || 3000;
 const MAX_PLAYERS = Number(process.env.MAX_PLAYERS) || 200;
+const DATA_FILE = process.env.DATA_FILE || path.join(__dirname, 'olta-data.json');
+const MAX_USERS = 5000, MAX_FRIENDS = 50, MAX_NOTES = 40, MAX_NOTES_PER_AUTHOR = 5;
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: '*' },          // 게임 화면을 다른 주소에서 열어도 접속 가능
-  pingInterval: 20000,            // 20초마다 연결 확인 (무료 호스팅의 유휴 끊김 방지)
+  cors: { origin: '*' },
+  pingInterval: 20000,
   pingTimeout: 25000,
-  maxHttpBufferSize: 10 * 1024    // 한 번에 보낼 수 있는 데이터 크기 제한(10KB)
+  maxHttpBufferSize: 10 * 1024
 });
 
-/* ---------- 정적 파일 + 상태 확인 ---------- */
 app.use(express.static(path.join(__dirname, 'public')));
 app.get('/healthz', (req, res) => res.json({ ok: true, online: players.size }));
 
-/* ---------- 접속자 저장소 (메모리) ---------- */
-const players = new Map(); // socket.id -> 접속자 정보
+/* ================= 저장소 ================= */
+const players = new Map();   // socket.id -> 지금 접속 중인 캐릭터
+const users = new Map();     // pid -> 저장되는 유저 정보(친구/신청/상점/방명록)
 
+function newUser(pid, nick, color) {
+  return { pid, nick, color, friends: [], requests: [], shop: null, notes: [], seen: Date.now() };
+}
+function loadData() {
+  try {
+    const raw = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+    for (const u of Object.values(raw.users || {})) {
+      if (u && typeof u.pid === 'string') users.set(u.pid, Object.assign(newUser(u.pid, u.nick || '손님', u.color || '#c9a7ff'), u, { friends: u.friends || [], requests: u.requests || [], notes: u.notes || [] }));
+    }
+    console.log('저장 데이터 불러옴:', users.size + '명');
+  } catch (e) { /* 파일이 없으면 새로 시작 */ }
+}
+let dirty = false, saveTimer = null;
+function markDirty() { dirty = true; if (!saveTimer) saveTimer = setTimeout(flush, 3000); }
+function flush() {
+  saveTimer = null; if (!dirty) return; dirty = false;
+  try {
+    const obj = {}; for (const [pid, u] of users) obj[pid] = u;
+    fs.writeFileSync(DATA_FILE + '.tmp', JSON.stringify({ users: obj }));
+    fs.renameSync(DATA_FILE + '.tmp', DATA_FILE);
+  } catch (e) { /* 저장 실패해도 서버는 계속 동작 */ }
+}
+function pruneUsers() {
+  if (users.size <= MAX_USERS) return;
+  const online = new Set([...players.values()].map(p => p.pid));
+  const old = [...users.values()].filter(u => !online.has(u.pid) && !u.friends.length && !u.notes.length).sort((a, b) => a.seen - b.seen);
+  for (const u of old) { if (users.size <= MAX_USERS) break; users.delete(u.pid); }
+}
+loadData();
+
+/* ================= 도우미 ================= */
 const ADJ = ['새벽', '달빛', '별빛', '은하', '보라', '몽글', '말랑', '반짝', '포근', '졸린'];
 const NOUN = ['고양이', '토끼', '여우', '수집가', '여행자', '유니콘', '구름', '혜성', '올빼미', '라떼'];
 const COLORS = ['#ff9ec4', '#b79cff', '#8fe3dc', '#ffd34e', '#ff9e7a', '#9fd0ff', '#c9a7ff', '#7ee8a0'];
 const pick = a => a[Math.floor(Math.random() * a.length)];
 const randomNick = () => pick(ADJ) + pick(NOUN) + '_' + String(Math.floor(Math.random() * 90) + 10);
-
-/* ---------- 입력값 정리 (이상한 값이 들어와도 서버가 죽지 않게) ---------- */
 const num = (v, lo, hi, d) => { v = Number(v); return Number.isFinite(v) ? Math.min(hi, Math.max(lo, Math.round(v))) : d; };
 const clean = (v, max) => String(v == null ? '' : v).replace(/[\u0000-\u001f\u007f<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, max);
 const FACES = ['u', 'd', 'l', 'r'];
+const pidOf = uid => crypto.createHash('sha256').update('olta:' + uid).digest('hex').slice(0, 12);
+const validPid = p => typeof p === 'string' && /^[0-9a-f]{12}$/.test(p);
 
-const publicInfo = p => ({
-  id: p.id, nick: p.nick, color: p.color,
-  x: p.x, y: p.y, floor: p.floor, scene: p.scene, face: p.face,
-  moving: p.moving, item: p.item, outfit: p.outfit, sit: p.sit, hide: p.hide
-});
-
-/* 아주 단순한 속도 제한: 1초에 limit번까지만 처리 */
 function limiter(limit, windowMs) {
   let start = Date.now(), n = 0;
   return () => { const now = Date.now(); if (now - start > windowMs) { start = now; n = 0; } return ++n <= limit; };
 }
+const socketsOf = pid => { const out = []; for (const p of players.values()) if (p.pid === pid) out.push(p.id); return out; };
+const isOnline = pid => socketsOf(pid).length > 0;
+const toPids = (pid, ev, data) => socketsOf(pid).forEach(id => io.to(id).emit(ev, data));
+const friendInfo = pid => { const u = users.get(pid); return u ? { pid, nick: u.nick, online: isOnline(pid) } : null; };
+const publicInfo = p => ({
+  id: p.id, pid: p.pid, nick: p.nick, color: p.color,
+  x: p.x, y: p.y, floor: p.floor, scene: p.scene, face: p.face,
+  moving: p.moving, item: p.item, outfit: p.outfit, sit: p.sit, hide: p.hide
+});
+const noteView = n => ({ id: n.id, from: n.from, nick: n.nick, text: n.text, t: n.t });
+const ack = (cb, data) => { if (typeof cb === 'function') cb(data); };
 
+/* ================= 접속 ================= */
 io.on('connection', socket => {
   if (players.size >= MAX_PLAYERS) { socket.emit('serverFull'); socket.disconnect(true); return; }
 
-  /* 1) 접속: 랜덤 닉네임/색상 부여 → 현재 접속자 목록을 신규 유저에게 전송 */
+  // 기기별 고유 uid(비밀) → 공개용 pid. uid가 없으면 이번 접속만 쓰는 임시 ID
+  let uid = socket.handshake.auth && socket.handshake.auth.uid;
+  if (typeof uid !== 'string' || !/^[A-Za-z0-9_-]{16,64}$/.test(uid)) uid = crypto.randomBytes(16).toString('hex');
+  const pid = pidOf(uid);
+
+  let rec = users.get(pid);
+  if (!rec) { rec = newUser(pid, randomNick(), pick(COLORS)); users.set(pid, rec); pruneUsers(); }
+  rec.seen = Date.now(); markDirty();
+
   const me = {
-    id: socket.id, nick: randomNick(), color: pick(COLORS),
+    id: socket.id, pid, nick: rec.nick, color: rec.color,
     x: 900, y: 980, floor: 1, scene: 'plaza', face: 'd',
     moving: false, item: '', outfit: 0, sit: false, hide: false
   };
@@ -66,29 +117,33 @@ io.on('connection', socket => {
 
   const others = [];
   for (const p of players.values()) if (p.id !== socket.id) others.push(publicInfo(p));
-  socket.emit('welcome', { id: me.id, nick: me.nick, color: me.color, players: others });
-  socket.emit('currentPlayers', others);                 // (호환용) 현재 접속자 목록
-  socket.broadcast.emit('playerJoined', publicInfo(me));  // 기존 유저들에게 신규 유저 알림
+  socket.emit('welcome', {
+    id: me.id, pid, nick: me.nick, color: me.color, players: others,
+    friends: rec.friends.map(friendInfo).filter(Boolean),
+    requests: rec.requests.map(friendInfo).filter(Boolean)
+  });
+  socket.emit('currentPlayers', others);
+  socket.broadcast.emit('playerJoined', publicInfo(me));
   io.emit('onlineCount', players.size);
+  rec.friends.forEach(f => toPids(f, 'friendStatus', { pid, nick: me.nick, online: true }));
 
   const moveOK = limiter(40, 1000), chatOK = limiter(4, 3000), nickOK = limiter(3, 5000);
+  const frOK = limiter(12, 10000), gbPostOK = limiter(1, 8000), gbOK = limiter(20, 5000), shopOK = limiter(4, 3000), visitOK = limiter(6, 5000);
 
-  /* 닉네임 변경 (클라이언트가 저장해 둔 닉네임을 올려 보냄) */
   socket.on('setNick', raw => {
     if (!nickOK()) return;
-    const nick = clean(raw, 12);
-    if (!nick) return;
-    me.nick = nick;
-    io.emit('playerRenamed', { id: me.id, nick });
+    const nick = clean(raw, 12); if (!nick) return;
+    me.nick = nick; rec.nick = nick; markDirty();
+    io.emit('playerRenamed', { id: me.id, pid, nick });
+    rec.friends.forEach(f => toPids(f, 'friendStatus', { pid, nick, online: true }));
   });
 
-  /* 2) 위치 이동: [X, Y, 층수, 방향, 이동중 여부, 손에 든 아이템] → 다른 모든 접속자에게 */
   socket.on('playerMove', d => {
     if (!d || typeof d !== 'object' || !moveOK()) return;
     me.x = num(d.x, -200, 4000, me.x);
     me.y = num(d.y, -200, 4000, me.y);
     me.floor = num(d.floor, 1, 4, 1);
-    me.scene = clean(d.scene, 12).replace(/[^a-z0-9_]/gi, '') || 'plaza';
+    me.scene = clean(d.scene, 24).replace(/[^a-z0-9_]/gi, '') || 'plaza';
     me.face = FACES.includes(d.face) ? d.face : 'd';
     me.moving = !!d.moving;
     me.item = clean(d.item, 12);
@@ -98,23 +153,110 @@ io.on('connection', socket => {
     socket.broadcast.emit('playerMoved', publicInfo(me));
   });
 
-  /* 3) 채팅: 말풍선 텍스트를 전체 유저에게 */
   socket.on('chatMessage', raw => {
     if (!chatOK()) return;
     const text = clean(raw && typeof raw === 'object' ? raw.text : raw, 40);
     if (!text) return;
-    io.emit('newChat', { id: me.id, nick: me.nick, color: me.color, text, t: Date.now() });
+    io.emit('newChat', { id: me.id, pid, nick: me.nick, color: me.color, text, t: Date.now() });
   });
 
-  /* 4) 퇴장: 다른 유저 화면에서 캐릭터 즉시 제거 */
+  /* ---------- 친구 ---------- */
+  socket.on('friendRequest', (d, cb) => {
+    if (!frOK()) return ack(cb, { ok: false, msg: '잠시 후 다시 시도해 주세요' });
+    const to = d && d.to; if (!validPid(to)) return ack(cb, { ok: false, msg: '상대를 찾을 수 없어요' });
+    const target = users.get(to);
+    if (!target) return ack(cb, { ok: false, msg: '상대를 찾을 수 없어요' });
+    if (to === pid) return ack(cb, { ok: false, msg: '자기 자신에게는 신청할 수 없어요' });
+    if (rec.friends.includes(to)) return ack(cb, { ok: false, msg: '이미 친구예요' });
+    if (rec.friends.length >= MAX_FRIENDS || target.friends.length >= MAX_FRIENDS) return ack(cb, { ok: false, msg: '친구 수가 가득 찼어요' });
+    if (rec.requests.includes(to)) { acceptFriend(pid, to); return ack(cb, { ok: true, msg: target.nick + '님과 친구가 되었어요!', accepted: true }); } // 서로 신청 → 자동 수락
+    if (target.requests.includes(pid)) return ack(cb, { ok: false, msg: '이미 신청을 보냈어요' });
+    if (target.requests.length >= 30) return ack(cb, { ok: false, msg: '상대가 받을 수 있는 신청이 가득 찼어요' });
+    target.requests.push(pid); markDirty();
+    toPids(to, 'friendRequested', { from: { pid, nick: me.nick } });
+    ack(cb, { ok: true, msg: target.nick + '님에게 친구 신청을 보냈어요' });
+  });
+
+  socket.on('friendRespond', (d, cb) => {
+    if (!frOK()) return ack(cb, { ok: false });
+    const from = d && d.from; if (!validPid(from) || !rec.requests.includes(from)) return ack(cb, { ok: false, msg: '이미 처리된 신청이에요' });
+    rec.requests = rec.requests.filter(p => p !== from);
+    if (d.accept) { acceptFriend(pid, from); ack(cb, { ok: true, accepted: true }); }
+    else { markDirty(); toPids(from, 'friendDeclined', { pid, nick: me.nick }); ack(cb, { ok: true, accepted: false }); }
+  });
+
+  socket.on('friendList', cb => ack(cb, { friends: rec.friends.map(friendInfo).filter(Boolean), requests: rec.requests.map(friendInfo).filter(Boolean) }));
+
+  /* ---------- 내 상점 정보 · 친구 상점 방문 ---------- */
+  socket.on('shopSnapshot', d => {
+    if (!d || typeof d !== 'object' || !shopOK()) return;
+    rec.shop = { opened: !!d.opened, theme: num(d.theme, 0, 2, 0), stock: [0, 1, 2].map(i => num(d.stock && d.stock[i], 0, 20, 0)), note: clean(d.note, 40) };
+    markDirty();
+  });
+
+  socket.on('visitShop', (d, cb) => {
+    if (!visitOK()) return ack(cb, { ok: false, msg: '잠시 후 다시 시도해 주세요' });
+    const to = d && d.pid; if (!validPid(to) || !rec.friends.includes(to)) return ack(cb, { ok: false, msg: '친구의 상점만 놀러갈 수 있어요' });
+    const t = users.get(to); if (!t) return ack(cb, { ok: false, msg: '친구를 찾을 수 없어요' });
+    if (!isOnline(to)) return ack(cb, { ok: false, msg: t.nick + '님이 지금 접속 중이 아니에요' });
+    ack(cb, { ok: true, owner: { pid: to, nick: t.nick }, snap: t.shop || { opened: false, theme: 0, stock: [0, 0, 0], note: '' } });
+  });
+
+  /* ---------- 방명록 ---------- */
+  const canUseBoard = owner => validPid(owner) && users.has(owner) && (owner === pid || rec.friends.includes(owner));
+
+  socket.on('gbOpen', (d, cb) => {
+    if (!gbOK()) return ack(cb, { ok: false });
+    const owner = d && d.owner; if (!canUseBoard(owner)) return ack(cb, { ok: false, msg: '친구의 방명록만 볼 수 있어요' });
+    socket.join('gb:' + owner); const u = users.get(owner);
+    ack(cb, { ok: true, owner: { pid: owner, nick: u.nick }, notes: u.notes.map(noteView) });
+  });
+  socket.on('gbClose', d => { if (d && validPid(d.owner)) socket.leave('gb:' + d.owner); });
+
+  socket.on('gbPost', (d, cb) => {
+    const owner = d && d.owner; if (!canUseBoard(owner)) return ack(cb, { ok: false, msg: '친구의 방명록에만 남길 수 있어요' });
+    const text = clean(d.text, 30); if (!text) return ack(cb, { ok: false, msg: '한 글자 이상 적어 주세요' });
+    if (!gbPostOK()) return ack(cb, { ok: false, msg: '조금 있다가 다시 남겨 주세요 (8초에 한 번)' });
+    const u = users.get(owner);
+    u.notes.push({ id: crypto.randomBytes(4).toString('hex'), from: pid, nick: me.nick, text, t: Date.now() });
+    const mine = u.notes.filter(n => n.from === pid);
+    if (mine.length > MAX_NOTES_PER_AUTHOR) u.notes = u.notes.filter(n => n !== mine[0]);
+    if (u.notes.length > MAX_NOTES) u.notes.shift();
+    markDirty();
+    io.to('gb:' + owner).emit('gbUpdate', { owner, notes: u.notes.map(noteView) });
+    if (owner !== pid) toPids(owner, 'gbNew', { from: me.nick });
+    ack(cb, { ok: true });
+  });
+
+  socket.on('gbDelete', (d, cb) => {
+    if (!gbOK()) return ack(cb, { ok: false });
+    const owner = d && d.owner; if (!canUseBoard(owner)) return ack(cb, { ok: false });
+    const u = users.get(owner), n = u.notes.find(q => q.id === String(d.id || ''));
+    if (!n || !(owner === pid || n.from === pid)) return ack(cb, { ok: false, msg: '삭제할 수 없어요' });
+    u.notes = u.notes.filter(q => q !== n); markDirty();
+    io.to('gb:' + owner).emit('gbUpdate', { owner, notes: u.notes.map(noteView) });
+    ack(cb, { ok: true });
+  });
+
   socket.on('disconnect', () => {
     players.delete(socket.id);
+    rec.seen = Date.now(); markDirty();
     io.emit('playerLeft', socket.id);
     io.emit('onlineCount', players.size);
+    if (!isOnline(pid)) rec.friends.forEach(f => toPids(f, 'friendStatus', { pid, nick: rec.nick, online: false }));
   });
 });
 
+function acceptFriend(a, b) {
+  const ua = users.get(a), ub = users.get(b); if (!ua || !ub) return;
+  ua.requests = ua.requests.filter(p => p !== b); ub.requests = ub.requests.filter(p => p !== a);
+  if (!ua.friends.includes(b)) ua.friends.push(b);
+  if (!ub.friends.includes(a)) ub.friends.push(a);
+  markDirty();
+  toPids(a, 'friendAdded', friendInfo(b));
+  toPids(b, 'friendAdded', friendInfo(a));
+}
+
 server.listen(PORT, () => console.log('🌙 올타 서버 실행 중 → 포트 ' + PORT));
 
-/* 호스팅이 서버를 끌 때(재배포 등) 깔끔하게 종료 */
-for (const sig of ['SIGTERM', 'SIGINT']) process.on(sig, () => { io.close(); server.close(() => process.exit(0)); setTimeout(() => process.exit(0), 3000).unref(); });
+for (const sig of ['SIGTERM', 'SIGINT']) process.on(sig, () => { flush(); io.close(); server.close(() => process.exit(0)); setTimeout(() => process.exit(0), 3000).unref(); });
