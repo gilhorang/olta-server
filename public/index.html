@@ -323,6 +323,15 @@ button{font-family:inherit;cursor:pointer}
 #gbform{display:flex;gap:6px}#gbin{flex:1;min-width:0;border-radius:12px;border:1px solid #a58abb;background:#1c1536;color:#fff;padding:10px;font-size:14px}#gbsend{width:auto;margin:0;padding:8px 14px}
 #lsquit{display:none;position:fixed;z-index:8;right:12px;top:calc(env(safe-area-inset-top,0px) + 104px);padding:9px 14px;border-radius:999px;border:1px solid #ffb3da;background:rgba(80,20,80,.92);color:#fff;font-size:13px;font-weight:700;box-shadow:0 0 14px rgba(255,100,180,.4)}
 #scope .mcard{width:min(94vw,340px)}#scopec{border-radius:50%!important;image-rendering:auto!important;touch-action:none;cursor:grab;aspect-ratio:1/1;background:#07051a}#scopec:active{cursor:grabbing}#scopetxt{min-height:3.2em;font-size:13px!important}
+#bak{position:fixed;inset:0;z-index:44;display:none;align-items:center;justify-content:center;background:rgba(8,4,26,.6);padding:16px;box-sizing:border-box}#bak.show{display:flex}#bak .mcard{width:min(94vw,380px);max-height:88vh;overflow:auto}
+.bakh{margin:12px 0 4px;color:#ffd0ee;font-size:13px;text-align:left}#bakcode{font:700 13px monospace;letter-spacing:1px;word-break:break-all;background:#1c1536;border:1px dashed #a58abb;padding:10px;border-radius:10px;user-select:all;-webkit-user-select:all;color:#fff}
+.bakrow{display:flex;gap:6px}.bakrow input{flex:1;min-width:0;border-radius:12px;border:1px solid #a58abb;background:#1c1536;color:#fff;padding:10px;font-size:13px}.bakrow button{width:auto;margin:0;padding:8px 12px}
+#baktxt{width:100%;height:64px;box-sizing:border-box;margin:6px 0;border-radius:12px;border:1px solid #a58abb;background:#1c1536;color:#fff;padding:8px;font-size:12px;resize:none}
+#bak small{display:block;margin-top:8px;line-height:1.4;color:#cdbff2}
+#omok{position:fixed;inset:0;z-index:44;display:none;align-items:center;justify-content:center;background:rgba(8,4,26,.6);padding:12px;box-sizing:border-box}#omok.show{display:flex}#omok .mcard{width:min(96vw,380px);max-height:94vh;overflow:auto}
+#ommenu button,#omwait button{display:block;width:100%;margin:8px 0}#ommenu button small{display:block;font-size:11px;opacity:.85;margin-top:3px}.omq{margin:6px 0;font-size:15px}.omdots{font-size:20px;letter-spacing:6px;margin:10px 0;animation:omb 1.2s infinite}@keyframes omb{50%{opacity:.4}}
+#omwai{display:none}#omc{width:100%;max-width:340px;aspect-ratio:1/1;border-radius:12px;touch-action:none;display:block;margin:6px auto;cursor:pointer;background:#e4d6ff}#omstat{font-size:13px;min-height:2.7em;line-height:1.35}#omtimer{font-size:12px;color:#ffd0ee;min-height:1.2em}
+.omrow{display:flex;gap:6px;justify-content:center;flex-wrap:wrap}.omrow button{width:auto;margin:0;padding:8px 12px;font-size:13px}.omrow button:disabled{opacity:.45}#ommsg{display:block;min-height:1.4em;margin-top:6px;color:#cdbff2}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/neodgm/neodgm-webfont@latest/neodgm/style.css">
 </head>
@@ -333,14 +342,13 @@ button{font-family:inherit;cursor:pointer}
   <div class="card">
     <p class="sub">언제나 새벽인 우주 골목길</p>
     <h1>언제나 새벽인 곳,<br>올타(OLTA)에 오신 것을 환영해요.</h1>
-    <button id="b1">일단 천천히 구경해볼래요</button>
-    <button id="b2">나만의 영업을 시작해볼래요</button>
+    <button id="b1">🌙 새벽 광장으로 들어가기</button>
   </div>
 </div>
 
 <button id="act"></button>
 
-<button id="hamb" aria-label="메뉴 열기">☰</button><div id="dback"></div><div id="drawer"><h3>메뉴</h3><button id="mapbtn" aria-label="마을 지도 열기">🗺️ 마을 지도 보기</button><button id="opsbag">🎒 소품 보관함 열기</button><button id="bgmbtn">🎵 BGM · OFF</button><div class="vols"><div class="volrow"><span>🎵 BGM</span><input type="range" id="volbgm" min="0" max="100" value="70"></div><div class="volrow"><span>🔊 효과음</span><input type="range" id="volsfx" min="0" max="100" value="80"></div></div><button id="prof" aria-label="닉네임 바꾸기"></button><button id="planebtn">✈️ 종이비행기 편지 쓰기</button><button id="dancebtn">💃 댄스</button><button id="friendsbtn">👥 친구 목록</button><div class="dsep"></div><button id="interbtn">🎨 인테리어 모드</button><button id="decorbtn">🛋️ 가구 배치</button></div><div id="catm"><div class="mcard"><h3>🐱 우주 길냥이</h3><p id="catsub"></p><button id="catpet">🖐️ 쓰담쓰담하기</button><button id="catfish">🐟 물고기 주기</button><button id="catclose" class="ghost">닫기</button></div></div>
+<button id="hamb" aria-label="메뉴 열기">☰</button><div id="dback"></div><div id="drawer"><h3>메뉴</h3><button id="mapbtn" aria-label="마을 지도 열기">🗺️ 마을 지도 보기</button><button id="opsbag">🎒 소품 보관함 열기</button><button id="bgmbtn">🎵 BGM · OFF</button><div class="vols"><div class="volrow"><span>🎵 BGM</span><input type="range" id="volbgm" min="0" max="100" value="70"></div><div class="volrow"><span>🔊 효과음</span><input type="range" id="volsfx" min="0" max="100" value="80"></div></div><button id="prof" aria-label="닉네임 바꾸기"></button><button id="planebtn">✈️ 종이비행기 편지 쓰기</button><button id="dancebtn">💃 댄스</button><button id="friendsbtn">👥 친구 목록</button><button id="bakbtn">☁️ 저장 · 백업</button><div class="dsep"></div><button id="interbtn">🎨 인테리어 모드</button><button id="decorbtn">🛋️ 가구 배치</button></div><div id="catm"><div class="mcard"><h3>🐱 우주 길냥이</h3><p id="catsub"></p><button id="catpet">🖐️ 쓰담쓰담하기</button><button id="catfish">🐟 물고기 주기</button><button id="catclose" class="ghost">닫기</button></div></div>
 <div id="plane"><div class="mcard"><h3 id="planetitle">✈️ 은하수 종이비행기</h3><p id="planeintro">밤하늘로 띄워 보낼 익명의 한마디를 적어 주세요.</p><p id="planequote" style="display:none"></p><textarea id="planein" maxlength="60" rows="3" placeholder="오늘 하루 수고했어요..."></textarea><div class="cnt"><span id="planecnt">0/60</span></div><p id="planemsg"></p><button id="planesend">✈️ 날리기</button><button id="planeclose" class="ghost">닫기</button></div></div>
 <div id="planeask"><div class="mcard"><p>✈️ 누군가가 밤하늘로 날려 보낸 종이비행기가 도착했습니다.<br>펼쳐볼까요?</p><div class="row2"><button id="planeyes">Yes</button><button id="planeno" class="ghost">No</button></div></div></div>
 <div id="letter"><div class="paper"><div class="ptitle">✉️ 이름 모를 별에서 온 편지</div><p id="lettext"></p><div class="psign">— 익명의 누군가가</div><button id="letreply">💌 답장 보내기</button><button id="letclose">접어서 간직하기</button></div></div>
@@ -470,6 +478,16 @@ button{font-family:inherit;cursor:pointer}
 <div id="frstack"></div>
 <div id="friends"><div class="mcard"><div class="thead"><h3>👥 친구 목록</h3><button id="friendsclose" class="x">×</button></div><div id="frreqs"></div><div id="frlist"></div><small id="frnote"></small></div></div>
 <div id="gbm"><div class="mcard"><div class="thead"><h3 id="gbtitle">📌 방명록</h3><button id="gbclose" class="x">×</button></div><div id="gbnotes"></div><div id="gbform"><input id="gbin" maxlength="30" placeholder="한 줄 메모 (30자)"><button id="gbsend">남기기</button></div><small id="gbmsg"></small></div></div>
+<div id="bak"><div class="mcard"><div class="thead"><h3>☁️ 저장 · 백업</h3><button id="bakclose" class="x">×</button></div>
+<p class="bakh">☁️ 내 저장 코드 (자동 클라우드 저장)</p><div id="bakcode"></div><button id="bakcopy">📋 코드 복사</button><small id="baktime"></small>
+<p class="bakh">☁️ 다른 기기·브라우저에서 불러오기</p><div class="bakrow"><input id="bakin" placeholder="저장 코드 붙여넣기" autocomplete="off"><button id="bakload">불러오기</button></div>
+<p class="bakh">💾 백업 문자열 (서버 없이도 가능)</p><button id="bakexp">📋 백업 문자열 복사</button><textarea id="baktxt" placeholder="백업 문자열을 여기에 붙여넣고 [가져오기]"></textarea><button id="bakimp">가져오기</button><small id="bakmsg"></small></div></div>
+<div id="omok"><div class="mcard">
+<div class="thead"><h3>🟣 오목</h3><button id="omclose" class="x">×</button></div>
+<div id="ommenu"><p class="omq">누구와 대결할까요?</p><button id="omai">👽 외계인과 대결할래요<small>AI 대전 · 이기면 🪙10</small></button><button id="omhum">🧑‍🚀 주민과 대결할래요<small>접속 중인 다른 참가자를 기다려요 · 이기면 🪙30</small></button></div>
+<div id="omwait"><p id="omwtxt"></p><div class="omdots">🟣 ⚪ 🟣 ⚪ 🟣</div><button id="omwai">👽 기다리기 힘들면 외계인과 대결하기</button><button id="omwcancel" class="ghost">대기 취소</button></div>
+<div id="omplay"><div id="omstat"></div><canvas id="omc" width="330" height="330"></canvas><div id="omtimer"></div><div class="omrow"><button id="omplace">여기에 놓기</button><button id="omagain">한 판 더</button><button id="omresign">기권하고 나가기</button></div><small id="ommsg"></small></div>
+</div></div>
 <div id="opspanel"><div id="opsdialog" role="dialog" aria-modal="true" aria-labelledby="opstitle"><div id="opshead"><h2 id="opstitle"></h2><button id="opsclose" aria-label="닫기">×</button></div><div id="opsbalance"></div><div id="opsbody"></div><p id="opsmsg" role="status" aria-live="polite"></p></div></div>
 <div id="gravitybar"><button id="capbtn" style="display:none" aria-label="수영모 바꾸기">🦆 수영모</button></div>
 <div id="hint">터치/WASD 이동 · 핀치·휠 확대 · PC 드래그 시점 · E 상호작용</div>
@@ -2756,7 +2774,7 @@ function update(dt) {
       if (c.paid && k > 1.9) c.st = 'ready';
     } else { tx = ty = 0; p.face = 'u'; if (t - c.ta > 30) startSpin(); }
   }
-  eatUpdate(); spinUpdate(dt); abdUpdate(dt); caveUpdate(dt, lock); tourUpdate(dt); danceUpdate(dt); emoteUpdate(); mpUpdate(dt); lsUpdate(dt); wheelUpdate(dt); escUpdate(dt); craneUpdate(dt); whackUpdate(dt); plazaUpdate(dt); foodUpdate(dt); goldUpdate(dt); raceUpdate(dt); scopeDraw(); twFloorToast(); homeBookFx(); catUpdate(dt); planeUpdate(dt); readUpdate(dt); showerUpdate(dt); visitUpdate(dt); audioFrame(dt); tickerUpdate(dt); npcWorkFx(dt);
+  eatUpdate(); spinUpdate(dt); abdUpdate(dt); caveUpdate(dt, lock); tourUpdate(dt); danceUpdate(dt); emoteUpdate(); mpUpdate(dt); lsUpdate(dt); wheelUpdate(dt); escUpdate(dt); craneUpdate(dt); whackUpdate(dt); omUpdate(dt); plazaUpdate(dt); foodUpdate(dt); goldUpdate(dt); raceUpdate(dt); scopeDraw(); twFloorToast(); homeBookFx(); catUpdate(dt); planeUpdate(dt); readUpdate(dt); showerUpdate(dt); visitUpdate(dt); audioFrame(dt); tickerUpdate(dt); npcWorkFx(dt);
   if (fish && fish.st !== 'end') { if (tx || ty) fish = null; else { tx = ty = 0; p.face = 'd'; } }
   if (tx || ty) p.face = Math.abs(tx) > Math.abs(ty) * 1.05 ? (tx > 0 ? 'r' : 'l') : (ty > 0 ? 'd' : 'u');
   if (mt && Math.abs(tx) > 6) mt.face = tx > 0 ? 'r' : 'l';
@@ -3333,7 +3351,7 @@ function drawInterior() {
   const L = furn[cur].filter(o => !o.hidden).map(o => ({k: o.y, f: () => drawFurn(o)}));
   if (cur === 'cave') L.push(...drawCaveExtras());
   if (cur === 'tw3') L.push(...lsDrawList());
-  L.push(...mpDrawList()); L.push(...gbDrawList());
+  L.push(...mpDrawList()); L.push(...gbDrawList()); L.push(...omDrawList());
   if (ct) L.push({k: 150, f: () => spr(ct.img, 1, 29, ct.x, 150)});
   if (cur === 'cafe') chairs.forEach(c => L.push({k: c.y - .1, f: () => { shadow(c.x, c.y, 10, 3); spr(chairSpr, 7, 21, c.x, c.y, c.face === 'l'); }}));
   if (cur === 'home' && HF.bed.in) L.push({k: bed.y, f: () => { shadow(bed.x, bed.y, 40, 8); spr(bedVar[homeStyle.bed], 17, 47, bed.x, bed.y, !!HF.bed.f); }}, {k: bed.y + .4, f: () => spr(blanketVar[homeStyle.bed], 15, 31, bed.x, bed.y + 1, !!HF.bed.f)});
@@ -3389,7 +3407,7 @@ function draw() {
 
 let last = performance.now();
 function frame(ts) {
-  const dt = Math.min(.05, (ts - last) / 1000); last = ts; t += dt;
+  const dt = Math.min(LS.net ? .25 : .05, (ts - last) / 1000); last = ts; t += dt;
   try { update(dt); draw(); if (mapOpen) drawMap(); if (gachaOpen) drawGacha(); if (fm) drawFm(); }
   catch (e) { frameErrs = (frameErrs || 0) + 1; if (frameErrs < 6) console.error('frame error', e); try { ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.setTransform(1, 0, 0, 1, 0, 0); } catch (_) {} }
   requestAnimationFrame(frame);
@@ -3499,11 +3517,6 @@ $('hamb').addEventListener('click', () => { if (!started || tr || attendOpen || 
 $('dback').addEventListener('click', () => setDrawer(false));
 drawerEl.addEventListener('click', e => { if (e.target.closest && e.target.closest('button')) setTimeout(() => setDrawer(false), 0); });
 $('b1').addEventListener('click', () => { setAudio(true); enter(); });
-$('b2').addEventListener('click', () => {
-  setAudio(true); $('b1').disabled = $('b2').disabled = true;
-  toast($('toast'), '새벽 소품샵에서 나만의 가게를 열어 봐요!', 2200);
-  setTimeout(enter, 2000);
-});
 /* ---------- 새벽 소품샵 · 은행 · 하우징 · 정거장 선물 ---------- */
 const GOODS = [
  {name:'은하수 드림캐쳐',icon:'🪶',cost:30,price:60,kind:'wall',color:'#c6a4f6'},
@@ -3568,7 +3581,7 @@ function routeShopTarget(){
  path.reverse();path.push(goal);player.shopPath=path;player.target=path.shift()||goal;
 }
 
-function saveOps(){store.set('olta.dawnshop',{...ops});}
+function saveOps(){if(window.__oltaRestoring)return;store.set('olta.dawnshop',{...ops});}
 function opsNotice(msg){$('opsmsg').textContent=msg;}
 function stopForOps(){player.shopPath=null;player.target=player.pending=null;player.vx=player.vy=0;player.run=false;for(const k in keys)keys[k]=false;gravity.lastRun=null;}
 function openOps(kind,index=0){
@@ -4779,7 +4792,7 @@ function drawCabinTrim() {
   c.restore();
 }
 /* ---------- 📰 상단 슬림 뉴스 티커 ---------- */
-const NEWS_STATIC = ['🚚 광장 우측 거리에 푸드트럭 야시장이 열렸어요! 솜사탕·문어빵·붕어빵', '🦉 분수대 옆 그루터기에 마스코트 별먼지 올타가 나타났어요', '🎸 외계인 3인조 버스킹 밴드가 분수대 앞에서 공연 중!', '🛸 2층 게임센터에 UFO 인형뽑기와 외계인 뿅망치가 입점했어요', '🏢 [개장] 올타 센트럴 타워! 서점·게임센터·시그널 라운지·루프탑 테라스', '🏇 우주 게임센터에 유니콘 경마 머신이 들어왔어요', '💘 3층 러브스튜디오에서 3:3 미팅 방송이 열려요! MC 큐피드와 함께', '🎡 광장 해변 옆에 은하수 대관람차가 운행 중! 정점에서 소원을 빌어 보세요', '✨ [속보] 별빛고양이님이 기적의 확률을 뚫고 황금 유니콘을 길들였습니다!', '🐟 심해에서 황금 고래가 목격되었습니다', '☕ 새벽 3시 카페 달빛 블렌드 완판', '🌙 올타임 새벽 마을에 오신 것을 환영합니다', '🐱 우주 길냥이가 자판기 위에서 낮잠 중이래요', '📮 밤하늘로 종이비행기가 날아다니는 중입니다'];
+const NEWS_STATIC = ['🚚 광장 남쪽 길에 푸드트럭 야시장이 열렸어요! 솜사탕·문어빵·붕어빵', '🦉 분수대 옆 그루터기에 마스코트 별먼지 올타가 나타났어요', '🎸 외계인 3인조 버스킹 밴드가 분수대 앞에서 공연 중!', '🛸 2층 게임센터에 UFO 인형뽑기와 외계인 뿅망치가 입점했어요', '🏢 [개장] 올타 센트럴 타워! 서점·게임센터·시그널 라운지·루프탑 테라스', '🏇 우주 게임센터에 유니콘 경마 머신이 들어왔어요', '💘 3층 러브스튜디오에서 3:3 미팅 방송이 열려요! MC 큐피드와 함께', '🎡 광장 해변 옆에 은하수 대관람차가 운행 중! 정점에서 소원을 빌어 보세요', '✨ [속보] 별빛고양이님이 기적의 확률을 뚫고 황금 유니콘을 길들였습니다!', '🐟 심해에서 황금 고래가 목격되었습니다', '☕ 새벽 3시 카페 달빛 블렌드 완판', '🌙 올타임 새벽 마을에 오신 것을 환영합니다', '🐱 우주 길냥이가 자판기 위에서 낮잠 중이래요', '📮 밤하늘로 종이비행기가 날아다니는 중입니다'];
 function pushNews(txt) { const a = store.get('olta.news', []); a.unshift(txt); store.set('olta.news', a.slice(0, 5)); tickText = ''; }
 function tickerText() {
   const dyn = store.get('olta.news', []).map(s => '✨ [속보] ' + s), extra = [];
@@ -5425,9 +5438,9 @@ function raceDraw() {
 const FNT = {x: 1150, y: 850}, STUMP = {x: 1246, y: 892};
 const BENCH2 = [[520, 520], [1120, 520], [700, 1120], [1120, 1140], [1330, 905]];
 const TRUCKS = [
-  {id: 'candy', x: 1540, y: 780, chef: 'candyo', name: '우주 솜사탕 트럭', sign: '✦ 우주 솜사탕 ✦', body: '#ff9ec4', awn: ['#ff9ec4', '#fff0f6'], items: [{k: 'candy', n: '은하수 솜사탕', p: 10, d: '핑크·블루 그라데이션! 30초 동안 걸을 때마다 별가루 발자국이 반짝여요'}], hi: '솜사탕 사세요~ 구름처럼 폭신해요!'},
-  {id: 'tako', x: 1400, y: 640, chef: 'takoo', name: '외계 타코야끼 트럭', sign: '👾 외계 타코야끼', body: '#a98cf0', awn: ['#8a6ae0', '#e6dcff'], items: [{k: 'tako', n: '은하수 문어빵', p: 15, d: '먹으면 체력 100% 회복!'}], hi: '촉수 셰프의 문어빵! 뒤집기 달인이죠 🐙'},
-  {id: 'bungeo', x: 1250, y: 592, chef: 'bungo', name: '별 붕어빵 & 성운 핫초코 트럭', sign: '⭐ 별 붕어빵 & 핫초코', body: '#7fdcd4', awn: ['#3fb8b0', '#e0fffa'], items: [{k: 'bungeo', n: '별 붕어빵', p: 10, d: '30초 동안 이동속도 +30% 부스터!'}, {k: 'cocoa', n: '성운 핫초코', p: 8, d: '따끈달콤한 한 잔 (분위기 음료)'}], hi: '갓 구운 별 붕어빵 나왔어요!'}];
+  {id: 'candy', x: 830, y: 1400, chef: 'candyo', name: '우주 솜사탕 트럭', sign: '✦ 우주 솜사탕 ✦', body: '#ff9ec4', awn: ['#ff9ec4', '#fff0f6'], items: [{k: 'candy', n: '은하수 솜사탕', p: 10, d: '핑크·블루 그라데이션! 30초 동안 걸을 때마다 별가루 발자국이 반짝여요'}], hi: '솜사탕 사세요~ 구름처럼 폭신해요!'},
+  {id: 'tako', x: 1040, y: 1400, chef: 'takoo', name: '외계 타코야끼 트럭', sign: '👾 외계 타코야끼', body: '#a98cf0', awn: ['#8a6ae0', '#e6dcff'], items: [{k: 'tako', n: '은하수 문어빵', p: 15, d: '먹으면 체력 100% 회복!'}], hi: '촉수 셰프의 문어빵! 뒤집기 달인이죠 🐙'},
+  {id: 'bungeo', x: 1250, y: 1400, chef: 'bungo', name: '별 붕어빵 & 성운 핫초코 트럭', sign: '⭐ 별 붕어빵 & 핫초코', body: '#7fdcd4', awn: ['#3fb8b0', '#e0fffa'], items: [{k: 'bungeo', n: '별 붕어빵', p: 10, d: '30초 동안 이동속도 +30% 부스터!'}, {k: 'cocoa', n: '성운 핫초코', p: 8, d: '따끈달콤한 한 잔 (분위기 음료)'}], hi: '갓 구운 별 붕어빵 나왔어요!'}];
 const VM2 = {x: 530, y: 800};
 const BAND = [{id: 'bandg', x: 1086, y: 936, role: 'guitar', sk: '#a8f0c0', hair: '#7ee8a0', coat: '#ff9e7a'}, {id: 'bandk', x: 1150, y: 946, role: 'keys', sk: '#c8b8ff', hair: '#a58be8', coat: '#8fd3e8'}, {id: 'bandd', x: 1214, y: 936, role: 'djembe', sk: '#ffd8a0', hair: '#ffb86b', coat: '#c9a7ff'}];
 // 장애물 · 좌석 · 상호작용
@@ -5697,14 +5710,14 @@ const LS = {q: [], conf: 0, confNext: 0, fillAt: 0, readyAt: 0, needResit: false
 const LS_KEYS = ['L', 'U', 'D', 'R', 'S'], LS_GLYPH = {L: '◀', U: '▲', D: '▼', R: '▶', S: '␣'};
 const lsSeatPt = i => { const s = seats.find(q => q.id === lsSeatId(i)); return [s.px, s.py]; };
 const lsNpc = i => LSB[i];
-function lsPartPos(i) { const p = LS.parts[i]; if (!p) return [0, 0]; return p.me ? [player.x, player.y] : [lsNpc(i).x, lsNpc(i).y]; }
-function lsSetPos(i, x, y) { const p = LS.parts[i]; if (p.me) { player.x = x; player.y = y; } else { lsNpc(i).x = x; lsNpc(i).y = y; } }
-function lsMove(i, x1, y1, dur) { const [x0, y0] = lsPartPos(i); LS.mv[i] = {t0: t, dur, x0, y0, x1, y1}; if (LS.parts[i].me) { player.sit = false; player.seat = null; } else { lsNpc(i).sit = false; lsNpc(i).moving = true; } }
-function lsFace(i, f) { if (LS.parts[i].me) player.face = f; else lsNpc(i).face = f; }
-function lsSay(i, text) { if (LS.parts[i].me) { for (let k = bubbles.length - 1; k >= 0; k--) if (bubbles[k].who === 'player') bubbles.splice(k, 1); bubbles.push({who: 'player', text, t0: t, dur: 2.6}); } else say(lsNpc(i).id, text, 2500); }
+function lsPartPos(i) { const p = LS.parts[i]; if (!p) return [0, 0]; return p.me ? [player.x, player.y] : p.human ? lsHumanPos(i) : [lsNpc(i).x, lsNpc(i).y]; }
+function lsSetPos(i, x, y) { const p = LS.parts[i]; if (p.human && !p.me) return; if (p.me) { player.x = x; player.y = y; } else { lsNpc(i).x = x; lsNpc(i).y = y; } }
+function lsMove(i, x1, y1, dur) { if (LS.parts[i].human && !LS.parts[i].me) return; const [x0, y0] = lsPartPos(i); LS.mv[i] = {t0: t, dur, x0, y0, x1, y1}; if (LS.parts[i].me) { player.sit = false; player.seat = null; } else { lsNpc(i).sit = false; lsNpc(i).moving = true; } }
+function lsFace(i, f) { if (LS.parts[i].me) player.face = f; else if (!LS.parts[i].human) lsNpc(i).face = f; }
+function lsSay(i, text) { if (LS.parts[i].me) { for (let k = bubbles.length - 1; k >= 0; k--) if (bubbles[k].who === 'player') bubbles.splice(k, 1); bubbles.push({who: 'player', text, t0: t, dur: 2.6}); } else if (LS.parts[i].human) { const r = lsRemote(i); if (r) r.chat = {text, until: Date.now() + 2800}; } else say(lsNpc(i).id, text, 2500); }
 function lsOnSit(s) {
   if (!s) return;
-  if (/^ls_/.test(s.id)) toast($('toast'), '🎤 미팅 참가자로 등록됐어요! MC 큐피드에게 말 걸어 방송을 시작해요', 3200);
+  if (/^ls_/.test(s.id)) { if (lsNetOn() && !LS.needResit && LS.st === 'idle') lsNetSit(lsSeatIdx(s.id)); else toast($('toast'), '🎤 미팅 참가자로 등록됐어요! MC 큐피드에게 말 걸어 방송을 시작해요', 3200); }
   else if (/^aud/.test(s.id)) toast($('toast'), '📣 방청석 입장! 채팅으로 응원·훈수를 보내요', 2600);
 }
 const _sitOn = sitOn; sitOn = function (s) { _sitOn(s); lsOnSit(s); };
@@ -5718,6 +5731,7 @@ function lsMakeParts(me) {
 }
 function lsStart() {
   if (cur !== 'tw3' || tr || (LS.st !== 'idle') || modalX) return false;
+  if (lsNetOn()) { toast($('toast'), '참가자 자리(A·B팀)에 앉으면 다른 사람들과 함께 방송이 시작돼요. 빈 자리는 외계인 친구들이 채워요 🎤', 3400); return false; }
   const me = lsMeSeatIdx(); LS.me = me;
   if (me >= 0) { LS.fillAt = 0; lsFill(me); return true; }
   lsMakeParts(-1); lsMc('방청객 여러분! 러브스튜디오 방송 시작합니다~ 📣', 3000);
@@ -5729,10 +5743,10 @@ function lsFill(me) {
   for (let i = 0; i < 6; i++) { if (i === me) continue; const n = lsNpc(i), [sx, sy] = lsSeatPt(i), ex = 250 + Math.random() * 60; Object.assign(n, {scene: 'tw3', x: ex, y: 366, sit: false, face: 'u', dance: false, moving: true}); LS.mv[i] = {t0: t + k * .35, dur: 1.5 + Math.random() * .6, x0: ex, y0: 366, x1: sx, y1: sy, arrive: true}; k++; }
   LS.st = 'fill'; lsMc('참가자가 모이고 있어요! 외계인 친구들이 달려와요~ 🛸', 3000); tone(784, 0, .1, .04); tone(1046, .1, .12, .04);
 }
-function lsCancelFill() { for (const n of LSB) { n.scene = 'ls_off'; n.moving = false; } LS.st = 'idle'; LS.mv = [null, null, null, null, null, null]; LS.me = -1; $('lsbanner').classList.remove('show'); $('lsintro').classList.remove('show'); }
+function lsCancelFill() { if (LS.net && mpSocket) mpSocket.emit('lsLeave', {}); LS.net = false; LS.askPending = false; LS.startAtT = 0; LSN.seated = -1; for (const n of LSB) { n.scene = 'ls_off'; n.moving = false; } LS.st = 'idle'; LS.mv = [null, null, null, null, null, null]; LS.me = -1; $('lsbanner').classList.remove('show'); $('lsintro').classList.remove('show'); }
 function openLsIntro() { LS.st = 'asking'; $('lsin').value = ''; $('lsintro').classList.add('show'); lsMc(nick + '님, 한 줄 소개를 적어 주세요 ✍️', 4000); }
 function lsIntroConfirm(skip) {
-  $('lsintro').classList.remove('show'); const v = skip ? '' : $('lsin').value.replace(/\s+/g, ' ').trim().slice(0, 20); LS.parts[LS.me].intro = v || '잘 부탁드려요! 두근두근 💓'; lsBegin();
+  $('lsintro').classList.remove('show'); const v = skip ? '' : $('lsin').value.replace(/\s+/g, ' ').trim().slice(0, 20); LS.parts[LS.me].intro = v || '잘 부탁드려요! 두근두근 💓'; if (LS.net && mpSocket) { mpSocket.emit('lsIntro', {text: v}); LS.st = 'waitStart'; lsMc('다른 참가자를 기다리고 있어요… ⏳', 4000); return; } lsBegin();
 }
 function lsBegin() {
   if (LS.me >= 0) { LS.seatSaved = player.seat; standUp(); lsLock = true; player.face = 'd'; dance = null; }
@@ -5740,17 +5754,17 @@ function lsBegin() {
   LS.st = 'intro'; LS.oi = 0; LS.t0 = t; LS.phase = -1; chime(); lsMc('러브스튜디오 시작! 먼저 자기소개 시간이에요 🎤', 3000);
 }
 function lsHideUi() { for (const id of ['lsintro', 'lspick', 'lsbanner', 'lsmcbox', 'lskey']) $(id).classList.remove('show'); $('lspad').style.display = 'none'; $('lsquit').style.display = 'none'; }
-function lsAbort() { lsHideUi(); for (const n of LSB) { n.scene = 'ls_off'; n.dance = false; n.moving = false; } lsLock = false; LS.st = 'idle'; LS.me = -1; LS.board = ''; LS.arrows = []; LS.mv = [null, null, null, null, null, null]; LS.fillAt = 0; }
-function lsDemote() { const i = LS.me; if (i < 0) return; const n = lsNpc(i), [sx, sy] = lsSeatPt(i); Object.assign(n, {scene: 'tw3', x: sx, y: sy, sit: true, face: i < 3 ? 'r' : 'l', dance: false, moving: false}); LS.parts[i].me = false; if (!LS.parts[i].intro) LS.parts[i].intro = '잘 부탁드려요!'; LS.me = -1; $('lspick').classList.remove('show'); $('lspad').style.display = 'none'; $('lskey').classList.remove('show'); lsMc('참가자가 자리를 비워서 이후는 자동으로 진행돼요~', 2500); }
+function lsAbort() { if (LS.net && mpSocket) mpSocket.emit('lsLeave', {}); LS.net = false; LS.askPending = false; LS.startAtT = 0; LS.pendingPicks = null; LS.waitPicks = false; LSN.seated = -1; lsHideUi(); for (const n of LSB) { n.scene = 'ls_off'; n.dance = false; n.moving = false; } lsLock = false; LS.st = 'idle'; LS.me = -1; LS.board = ''; LS.arrows = []; LS.mv = [null, null, null, null, null, null]; LS.fillAt = 0; }
+function lsDemote() { const i = LS.me; if (i < 0) return; const n = lsNpc(i), [sx, sy] = lsSeatPt(i); Object.assign(n, {scene: 'tw3', x: sx, y: sy, sit: true, face: i < 3 ? 'r' : 'l', dance: false, moving: false}); LS.parts[i].me = false; LS.parts[i].human = false; if (!LS.parts[i].intro) LS.parts[i].intro = '잘 부탁드려요!'; LS.me = -1; $('lspick').classList.remove('show'); $('lspad').style.display = 'none'; $('lskey').classList.remove('show'); lsMc('참가자가 자리를 비워서 이후는 자동으로 진행돼요~', 2500); }
 function lsEndShow() { LS.needResit = true; if (LS.me >= 0) { const ss = seats.find(q => q.id === lsSeatId(LS.me)); dance = null; lsMove(LS.me, ss.stand.x, ss.stand.y, 1); LS.mv[LS.me].sitSeat = ss; } for (const n of LSB) { n.dance = false; n.moving = false; } $('lspad').style.display = 'none'; $('lskey').classList.remove('show'); LS.st = 'cool'; LS.t0 = t; }
-function lsFinishCool() { if (lsLock) { lsLock = false; dance = null; player.moving = false; } for (let i = 0; i < 6; i++) { const n = lsNpc(i); n.scene = 'ls_off'; n.dance = false; } LS.st = 'idle'; LS.me = -1; LS.board = ''; LS.arrows = []; LS.couples = []; lsHideUi(); }
+function lsFinishCool() { LS.net = false; LSN.seated = -1; LSN.local = false; if (lsLock) { lsLock = false; dance = null; player.moving = false; } for (let i = 0; i < 6; i++) { const n = lsNpc(i); n.scene = 'ls_off'; n.dance = false; } LS.st = 'idle'; LS.me = -1; LS.board = ''; LS.arrows = []; LS.couples = []; lsHideUi(); }
 function lsTickIntro() {
   const el = t - LS.t0, per = 4.4, k = Math.floor(el / per);
   if (k >= 6) { lsToDance(); return; }
   const i = LS.order[k], ph = el - k * per, p = LS.parts[i];
   if (LS.phase !== k) { LS.phase = k; lsMc(p.name + '님 등장! 👏', 2200); lsMove(i, LS_C[0], LS_C[1], .9); }
   if (ph > .95 && !LS.mv[i] && !p.said) { p.said = true; lsFace(i, 'd'); lsSay(i, p.name + ': ' + p.intro); LS.wave[i] = t + 2.4; tone(988, 0, .1, .04); tone(1318, .08, .12, .04); }
-  if (ph > 3.6 && !p.back) { p.back = true; if (p.me) { const ss = seats.find(q => q.id === lsSeatId(i)); lsMove(i, ss.stand.x, ss.stand.y, .8); } else { const [sx, sy] = lsSeatPt(i); lsMove(i, sx, sy, .8); LS.mv[i].arrive = true; } }
+  if (ph > 3.6 && !p.back) { p.back = true; if (p.me) { const ss = seats.find(q => q.id === lsSeatId(i)); lsMove(i, ss.stand.x, ss.stand.y, .8); } else { const [sx, sy] = lsSeatPt(i); lsMove(i, sx, sy, .8); if (LS.mv[i]) LS.mv[i].arrive = true; } }
 }
 function lsToDance() {
   LS.st = 'dance'; LS.t0 = t; LS.keyN = 0; LS.nextKey = t + 1.4; LS.key = ''; LS.combo = 0; LS.beatS = 0; LS.beatT = t;
@@ -5766,26 +5780,27 @@ function lsBeat(v) { const s = LS.beatS++, bass = [110, 110, 146.8, 130.8][(s >>
 function lsTickDance() {
   const el = t - LS.t0;
   if (ac && audioOn && t >= LS.beatT) { LS.beatT = t + .3; lsBeat(.9); }
-  for (let i = 0; i < 6; i++) if (!LS.mv[i]) { if (i === LS.me) { if (!dance) dance = {t0: t, nt: t}; } else lsNpc(i).dance = true; }
+  for (let i = 0; i < 6; i++) if (!LS.mv[i]) { if (i === LS.me) { if (!dance) dance = {t0: t, nt: t}; } else if (!(LS.parts[i] && LS.parts[i].human)) lsNpc(i).dance = true; }
   if (LS.key && t > LS.keyAt + 1.2) { if (!LS.keyHit && LS.me >= 0) LS.combo = 0; LS.key = ''; $('lskey').classList.remove('show'); }
   if (LS.keyN < 12 && t >= LS.nextKey && el > 1.4) { LS.keyN++; LS.key = LS_KEYS[Math.floor(Math.random() * 5)]; LS.keyAt = t; LS.keyHit = false; LS.nextKey = t + 1.4; tone(660, 0, .05, .03); if (LS.me >= 0) { $('lskeyg').textContent = LS_GLYPH[LS.key]; $('lskey').classList.add('show'); }
     for (let i = 0; i < 6; i++) if (i !== LS.me && Math.random() < .72) LS.q.push({at: t + .2 + Math.random() * .8, i}); }
   if (LS.keyN >= 12 && t > LS.keyAt + 1.6) lsToPick();
 }
 function lsToPick() {
+  if (LS.net && LS.me >= 0 && mpSocket) mpSocket.emit('lsScore', {score: LS.score[LS.me]});
   LS.st = 'pick'; LS.t0 = t; LS.lockAt = t + 4.8; LS.key = ''; $('lspad').style.display = 'none'; $('lskey').classList.remove('show'); for (const n of LSB) n.dance = false;
   lsMc('운명의 사랑의 작대기, 선택해 주세요! 3, 2, 1!', 4000); chime();
   if (LS.me >= 0) { const opp = LS.me < 3 ? [3, 4, 5] : [0, 1, 2]; $('lspicklist').innerHTML = ''; opp.forEach((j, k) => { const b = document.createElement('button'); b.dataset.j = String(j); b.textContent = (k + 1) + '번 ' + LS.parts[j].name + ' · ' + LS.parts[j].intro; $('lspicklist').appendChild(b); }); $('lspickmsg').textContent = '선택 마감까지 3초'; $('lspick').classList.add('show'); }
 }
-function lsChoose(j) { if (LS.st !== 'pick' || LS.me < 0 || LS.picked) return false; if ((LS.me < 3) === (j < 3)) return false; LS.pick[LS.me] = j; LS.picked = true; $('lspickmsg').textContent = '💘 ' + LS.parts[j].name + '님을 선택했어요! 두근두근…'; tone(1175, 0, .1, .05); return true; }
+function lsChoose(j) { if (LS.st !== 'pick' || LS.me < 0 || LS.picked) return false; if ((LS.me < 3) === (j < 3)) return false; LS.pick[LS.me] = j; LS.picked = true; if (LS.net && mpSocket) mpSocket.emit('lsPick', {j}); $('lspickmsg').textContent = '💘 ' + LS.parts[j].name + '님을 선택했어요! 두근두근…'; tone(1175, 0, .1, .05); return true; }
 function lsBotPick(i) { const opp = i < 3 ? [3, 4, 5] : [0, 1, 2]; const w = opp.map(j => 1 + LS.score[j] * .3 + (j === LS.me ? .3 : 0)), sum = w.reduce((a, b) => a + b, 0); let r = Math.random() * sum; for (let k = 0; k < 3; k++) { if (r < w[k]) return opp[k]; r -= w[k]; } return opp[2]; }
 function lsZap() { tone(2200, 0, .04, .05); tone(1500, .04, .04, .05); tone(2600, .08, .04, .04); tone(1100, .12, .05, .04); }
 function lsTickPick() {
   const left = LS.lockAt - t; if (LS.me >= 0 && !LS.picked) $('lspickmsg').textContent = '선택 마감까지 ' + Math.max(0, Math.ceil(left - 1.5)) + '초';
-  if (!LS.fired && left <= 0) {
-    $('lspick').classList.remove('show'); LS.fired = 1; if (LS.me >= 0 && LS.pick[LS.me] < 0) { const opp = LS.me < 3 ? [3, 4, 5] : [0, 1, 2]; LS.pick[LS.me] = opp[Math.floor(Math.random() * 3)]; }
-    for (let i = 0; i < 6; i++) if (i !== LS.me) LS.pick[i] = lsBotPick(i);
-    LS.arrows = LS.order.map((i, k) => ({from: i, to: LS.pick[i], at: t + .4 * k, st: 0, n: k})); lsMc('사랑의 작대기 발사~! 💘', 2600);
+  if (!LS.fired && !LS.waitPicks && left <= 0) {
+    $('lspick').classList.remove('show'); if (LS.me >= 0 && LS.pick[LS.me] < 0) { const opp = LS.me < 3 ? [3, 4, 5] : [0, 1, 2]; LS.pick[LS.me] = opp[Math.floor(Math.random() * 3)]; if (LS.net && mpSocket) mpSocket.emit('lsPick', {j: LS.pick[LS.me]}); }
+    if (LS.net) { LS.waitPicks = true; lsMc('운명의 결과를 계산하고 있어요… 💘', 3000); }
+    else { for (let i = 0; i < 6; i++) if (i !== LS.me) LS.pick[i] = lsBotPick(i); lsFirePicks(); }
   }
   if (LS.fired) {
     let allDone = true; for (const a of LS.arrows) { if (a.st === 0 && t >= a.at) { a.st = 1; a.t1 = t; lsZap(); } if (a.st === 1 && t - a.t1 >= .7) { a.st = 2; tone(1568, 0, .06, .04); const [x, y] = lsPartPos(a.to); sparkle(x, y - 70); } if (a.st !== 2) allDone = false; }
@@ -5812,16 +5827,18 @@ function lsUpdate(dt) {
   if (LS.st === 'idle') {
     const me = lsMeSeatIdx();
     if (LS.needResit) { if (me < 0) LS.needResit = false; return; }
+    if (lsNetOn()) { lsNetIdle(me); return; }
     if (me >= 0 && cur === 'tw3' && !tr && !modalX) { if (!LS.fillAt) LS.fillAt = t + 1; else if (t >= LS.fillAt) { LS.fillAt = 0; lsFill(me); } } else LS.fillAt = 0;
     return;
   }
   if (cur !== 'tw3') { lsAbort(); return; }
-  if (LS.me >= 0 && !(player.sit && player.seat && lsSeatIdx(player.seat.id) === LS.me) && (LS.st === 'fill' || LS.st === 'ready' || LS.st === 'asking')) { lsCancelFill(); return; }
+  if (LS.me >= 0 && !(player.sit && player.seat && lsSeatIdx(player.seat.id) === LS.me) && (LS.st === 'fill' || LS.st === 'ready' || LS.st === 'asking' || LS.st === 'waitStart')) { lsCancelFill(); return; }
   for (let i = 0; i < 6; i++) { const m = LS.mv[i]; if (!m) continue; const k = clamp((t - m.t0) / m.dur, 0, 1), e = k * k * (3 - 2 * k); lsSetPos(i, m.x0 + (m.x1 - m.x0) * e, m.y0 + (m.y1 - m.y0) * e); if (k > 0 && k < 1) { const dx = m.x1 - m.x0, dy = m.y1 - m.y0, f = Math.abs(dx) > Math.abs(dy) * .8 ? (dx < 0 ? 'l' : 'r') : (dy < 0 ? 'u' : 'd'); if (i === LS.me) { player.face = f; player.moving = true; } else { const n = lsNpc(i); n.face = f; n.moving = true; } } if (k >= 1) { LS.mv[i] = null; if (i === LS.me) { player.moving = false; if (m.sitSeat) { lsLock = false; dance = null; sitOn(m.sitSeat); } } if (i !== LS.me) { const n = lsNpc(i); n.moving = false; if (m.arrive) { n.sit = true; n.face = i < 3 ? 'r' : 'l'; n.x = m.x1; n.y = m.y1; } } } }
   if (LS.conf && t < LS.conf && t >= LS.confNext) { LS.confNext = t + .09; confettiBurst(); }
   for (let k = LS.q.length - 1; k >= 0; k--) { const e = LS.q[k]; if (t >= e.at) { LS.q.splice(k, 1); if (LS.st === 'dance') { LS.score[e.i]++; const [x, y] = lsPartPos(e.i); sparkle(x, y - 40); } } }
-  if (LS.st === 'fill') { if (LS.mv.every(m => !m) && LSB.every((n, i) => i === LS.me || n.sit)) { LS.st = 'ready'; LS.readyAt = t; lsBanner('참가자 6명 입장 완료! 미팅을 시작합니다!', 2800); lsMc('참가자 6명 입장 완료! 미팅을 시작합니다!', 3000); chime(); } }
-  else if (LS.st === 'ready') { if (t - LS.readyAt > 2.8) { if (LS.me >= 0) openLsIntro(); else lsBegin(); } }
+  if (LS.st === 'fill') { if (LS.mv.every(m => !m) && LSB.every((n, i) => i === LS.me || (LS.parts[i] && LS.parts[i].human) || n.sit)) { LS.st = 'ready'; LS.readyAt = t; lsBanner('참가자 6명 입장 완료! 미팅을 시작합니다!', 2800); lsMc('참가자 6명 입장 완료! 미팅을 시작합니다!', 3000); chime(); } }
+  else if (LS.st === 'ready') { if (!LS.net && t - LS.readyAt > 2.8) { if (LS.me >= 0) openLsIntro(); else lsBegin(); } }
+  if (LS.net) lsNetTick();
   if (LS.st === 'intro') lsTickIntro(); else if (LS.st === 'dance') lsTickDance(); else if (LS.st === 'pick') lsTickPick();
   else if (LS.st === 'result' && t - LS.t0 > 6.5) lsEndShow(); else if (LS.st === 'cool' && t - LS.t0 > 2.5) lsFinishCool();
   if (LS.st !== 'asking' && LS.st !== 'cool' && LS.st !== 'fill' && t >= LS.cheerT) { LS.cheerT = t + 3.2 + Math.random() * 2; const a = LSAUDN[Math.floor(Math.random() * 3)], L = ['A팀 파이팅~!', 'B팀 힘내라!', '두근두근 ㅎㅎ', '와아아 👏', '저분 매력 있다!', '고백해 고백해~']; say(a.id, L[Math.floor(Math.random() * L.length)], 2200); }
@@ -5830,10 +5847,10 @@ function seatBob() { if (LS.st === 'dance' && LS.me >= 0 && player.sit) return -
 function lsKeyBar() { if (LS.key && LS.me >= 0) $('lskeyi').style.width = (100 * (1 - clamp((t - LS.keyAt) / 1.2, 0, 1))) + '%'; }
 var lsQuitArm = 0;
 function lsQuit() {
-  if (LS.me < 0 || !lsLock) return false; const i = LS.me, n = lsNpc(i);
+  if (LS.me < 0 || !lsLock) return false; if (LS.net && mpSocket) mpSocket.emit('lsQuit', {}); const i = LS.me, n = lsNpc(i);
   lsLock = false; dance = null; player.moving = false; player.target = player.pending = null;
   Object.assign(n, {scene: 'tw3', x: player.x, y: player.y, sit: false, face: player.face, dance: false, moving: !!LS.mv[i]});
-  LS.parts[i].me = false; if (!LS.parts[i].intro) LS.parts[i].intro = '잘 부탁드려요!'; LS.me = -1; if (LS.mv[i]) LS.mv[i].sitSeat = null;
+  LS.parts[i].me = false; LS.parts[i].human = false; if (!LS.parts[i].intro) LS.parts[i].intro = '잘 부탁드려요!'; LS.me = -1; if (LS.mv[i]) LS.mv[i].sitSeat = null;
   $('lspick').classList.remove('show'); $('lspad').style.display = 'none'; $('lskey').classList.remove('show'); $('lsquit').style.display = 'none';
   lsMc('참가자가 그만두었어요. 이후는 자동으로 진행돼요~', 2800); toast($('toast'), '🚪 미팅 참가를 그만뒀어요. 자유롭게 움직여도 돼요', 2800); return true;
 }
@@ -5879,7 +5896,7 @@ function lsDrawList() {
     const [x, y] = lsPartPos(i); if (!LS.parts[i]) continue;
     o.push({k: y + .3, f: () => {
       const c = ctx; if (LS.wave[i] > t) { const sw = Math.sin(t * 14) * 5; c.fillStyle = '#ffe0c8'; c.fillRect(x + 12 + sw * .3, y - 66 + Math.abs(sw), 6, 8); c.fillRect(x + 12, y - 58, 3, 14); }
-      if (LS.st === 'dance' || LS.st === 'pick' || LS.st === 'result') { c.font = 'bold 9px ' + FONT; c.textAlign = 'center'; c.fillStyle = '#fff'; c.strokeStyle = '#2a1a4a'; c.lineWidth = 3; if (i !== LS.me) { c.strokeText(LS.parts[i].name, x, y + 12); c.fillText(LS.parts[i].name, x, y + 12); } if (LS.st === 'dance') { c.fillStyle = '#ffe27a'; c.strokeText('★' + LS.score[i], x, y + 24); c.fillText('★' + LS.score[i], x, y + 24); } }
+      if (LS.st === 'dance' || LS.st === 'pick' || LS.st === 'result') { c.font = 'bold 9px ' + FONT; c.textAlign = 'center'; c.fillStyle = '#fff'; c.strokeStyle = '#2a1a4a'; c.lineWidth = 3; if (i !== LS.me && !LS.parts[i].human) { c.strokeText(LS.parts[i].name, x, y + 12); c.fillText(LS.parts[i].name, x, y + 12); } if (LS.st === 'dance') { c.fillStyle = '#ffe27a'; c.strokeText('★' + LS.score[i], x, y + 24); c.fillText('★' + LS.score[i], x, y + 24); } }
       for (const a of LS.arrows) if (a.to === i && a.st === 2) { const off = (a.from % 3 - 1) * 9; c.save(); c.translate(x + off, y - 78 - ((a.from % 2) * 4)); c.rotate(-.5); c.fillStyle = '#ff4fb0'; c.fillRect(-14, -1.5, 28, 3); c.fillStyle = '#fff'; c.fillRect(-14, -3, 5, 6); c.fillStyle = '#ffd0ee'; c.beginPath(); c.moveTo(14, 0); c.lineTo(7, -5); c.lineTo(7, 5); c.fill(); c.restore(); c.save(); c.globalCompositeOperation = 'lighter'; glowC(x + off, y - 78, 16, .35, '255,80,170'); c.restore(); }
     }});
   }
@@ -6004,7 +6021,8 @@ function mpUi() {
   if (el._k !== txt) { el._k = txt; el.textContent = txt; }
 }
 function mpState() {
-  return {x: Math.round(player.x), y: Math.round(player.y), floor: MP_FLOOR[cur] || 1, scene: mpKey(), face: player.face, moving: !!player.moving, item: hfood ? hfood.k : (player.drink ? 'can' : ''), outfit: player.outfit | 0, sit: !!player.sit, hide: !!wheelHide};
+  return {x: Math.round(player.x), y: Math.round(player.y), floor: MP_FLOOR[cur] || 1, scene: mpKey(), face: player.mount ? player.mount.face : player.face, moving: !!player.moving, item: hfood ? hfood.k : (player.drink ? 'can' : ''), outfit: player.outfit | 0, sit: !!player.sit, hide: !!wheelHide,
+    mnt: player.mount ? player.mount.c | 0 : -1, mfl: !!(player.mount && player.mount.fly && player.mount.h > 3), mh: player.mount ? Math.round((player.mount.h || 0) / 6) * 6 : 0, swim: !!(isSwimming() && !gravity.jump), cap: gravity.cap | 0, dance: !!dance, lie: !!(player.sit && player.seat && player.seat.kind === 'lie'), emo: (emote && t < emote.until) ? (emote.k === 'laugh' ? 1 : emote.k === 'cry' ? 2 : 0) : 0};
 }
 function mpSend(force) {
   if (!mpSocket || !MP.on) return; const s = mpState(), key = JSON.stringify(s), now = Date.now();
@@ -6014,13 +6032,14 @@ function mpChat(text) { if (mpSocket && MP.on && text) mpSocket.emit('chatMessag
 function mpSetNick() { if (mpSocket && MP.on) mpSocket.emit('setNick', nick); }
 function mpAdd(info) {
   if (!info || !info.id || info.id === MP.id) return null; let r = MP.remotes.get(info.id);
-  if (!r) { r = {id: info.id, pid: info.pid, nick: info.nick || '손님', color: info.color || '#c9a7ff', x: info.x, y: info.y, rx: info.x, ry: info.y, scene: info.scene || 'plaza', floor: info.floor || 1, face: 'd', moving: false, item: '', outfit: 0, sit: false, hide: false, chat: null, seen: Date.now()}; MP.remotes.set(info.id, r); }
+  if (!r) { r = {id: info.id, pid: info.pid, nick: info.nick || '손님', color: info.color || '#c9a7ff', x: info.x, y: info.y, rx: info.x, ry: info.y, scene: info.scene || 'plaza', floor: info.floor || 1, face: 'd', moving: false, item: '', outfit: 0, sit: false, hide: false, mnt: -1, mfl: false, mh: 0, swim: false, cap: 0, dance: false, lie: false, emo: 0, chat: null, seen: Date.now()}; MP.remotes.set(info.id, r); }
   return mpApply(r, info);
 }
 function mpApply(r, i) {
   const far = r.scene !== i.scene || Math.hypot(r.x - i.x, r.y - i.y) > 260;
   if (i.pid) r.pid = i.pid; if (i.nick) r.nick = i.nick; if (i.color) r.color = i.color;
   r.scene = i.scene || r.scene; r.floor = i.floor || r.floor; r.x = i.x; r.y = i.y; r.face = i.face || r.face; r.moving = !!i.moving; r.item = i.item || ''; r.outfit = i.outfit | 0; r.sit = !!i.sit; r.hide = !!i.hide; r.seen = Date.now();
+  r.mnt = Number.isInteger(i.mnt) ? i.mnt : -1; r.mfl = !!i.mfl; r.mh = +i.mh || 0; r.swim = !!i.swim; r.cap = i.cap | 0; r.dance = !!i.dance; r.lie = !!i.lie; r.emo = i.emo | 0;
   if (far) { r.rx = r.x; r.ry = r.y; } r.pal = mpPal(r.outfit, r.color); return r;
 }
 function mpInit() {
@@ -6043,7 +6062,7 @@ function mpInit() {
   mpUi();
 }
 function mpUpdate(dt) {
-  MP.acc += dt; mpSnapTick(); if (MP.acc >= .1) { MP.acc = 0; mpSend(false); }
+  MP.acc += dt; mpSnapTick(); cloudTick(); if (MP.acc >= .1) { MP.acc = 0; mpSend(false); }
   const k = Math.min(1, dt * 10), now = Date.now();
   for (const [id, r] of MP.remotes) { r.rx += (r.x - r.rx) * k; r.ry += (r.y - r.ry) * k; if (now - r.seen > 25000) MP.remotes.delete(id); }
   mpUi();
@@ -6052,10 +6071,30 @@ function drawFoodRemote(kind, x, y, face) {
   const sv = [hfood, player.drink, player.eat, player.sit]; hfood = {k: kind, left: FOODS[kind].bites, bite: null}; player.drink = null; player.eat = null; player.sit = false;
   try { drawHeldFood(x, y, face); } finally { hfood = sv[0]; player.drink = sv[1]; player.eat = sv[2]; player.sit = sv[3]; }
 }
+function drawRemoteRider(r, x, y) {
+  const fl = r.mfl, mv = r.moving, pose = fl ? 'fly' : mv ? 'run' : 'stand', fr = fl ? [0, 1, 2, 1][Math.floor(t * 10) % 4] : mv ? Math.floor(t * 9) % 2 : Math.floor(t * 1.4) % 2, flip = r.face === 'l', bob = fl ? Math.round(Math.sin(t * 5) * 2) : (mv ? -(Math.floor(t * 9) % 2) * 2 : 0), mh = r.mh || 0, uy = y - mh + bob, c = clamp(r.mnt, 0, UNI.length - 1);
+  const h0 = HS; HS = 1; ctx.save(); ctx.translate(x, y); ctx.scale(1.3, 1.3); ctx.translate(-x, -y);
+  ctx.fillStyle = `rgba(8,2,30,${Math.max(.12, .38 - mh * .01)})`; ctx.beginPath(); ctx.ellipse(x, y + 1, Math.max(14, 24 - mh * .35), Math.max(4, 6 - mh * .1), 0, 0, 7); ctx.fill();
+  spr(uniSpr(c, pose, fr), 18, 30, x, uy, flip); spr(humanSpr(r.pal, r.face, 0, true, (t % 4) < .12, 0, ''), 9, 28, x, uy - 18, flip);
+  if (pose === 'fly') { if (c === 4) drawGoldenAura(x, uy); spr(uniWingSpr(c, fr), 18, 30, x, uy, flip); }
+  ctx.restore(); HS = h0;
+}
+function drawRemoteSwim(r, x, y) {
+  const bob = Math.sin(t * (r.moving ? 9 : 2)) * 2, y2 = y + bob; shadow(x, y, 16, 4);
+  ctx.save(); ctx.beginPath(); ctx.rect(x - 35, y - 65, 70, 57); ctx.clip(); spr(humanSpr(r.pal, r.face, 0, false, false, 0, ''), 9, 24, x, y2 + 9, r.face === 'l'); ctx.restore();
+  const sv = gravity.cap; gravity.cap = clamp(r.cap | 0, 0, CAPS.length - 1); try { drawSwimCap(x, y2 - 49, 1.5); } finally { gravity.cap = sv; }
+  ctx.fillStyle = r.pal.skin; const w = Math.sin(t * 9) * (r.moving ? 8 : 2); ctx.fillRect(x - 19, y2 - 12 + w, 8, 4); ctx.fillRect(x + 10, y2 - 12 - w, 8, 4);
+  ctx.strokeStyle = '#a8ebed'; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(x, y, 21, 5, 0, 0, Math.PI * 2); ctx.stroke();
+}
 function drawRemote(r) {
-  const x = r.rx, y = r.ry, sw = r.moving ? [0, 1, 0, -1][Math.floor(t * 8) % 4] : 0;
-  shadow(x, y, 16, 6); spr(humanSpr(r.pal, r.face, sw, !!r.sit, (t % 4) < .12, 0, ''), 9, r.sit ? 28 : 24, x, y + (r.moving && sw === 0 ? -1 : 0), r.face === 'l');
-  if (r.item && !r.sit) { if (FOODS[r.item]) drawFoodRemote(r.item, x, y, r.face); else if (r.item === 'can') { const sg = r.face === 'l' ? -1 : 1; ctx.fillStyle = '#c07a4a'; ctx.fillRect(x + sg * 11 - 3, y - 30, 6, 9); ctx.fillStyle = '#fff'; ctx.fillRect(x + sg * 11 - 3, y - 30, 6, 2); } }
+  const x = r.rx, y = r.ry;
+  if (r.mnt >= 0) { drawRemoteRider(r, x, y); return; }
+  if (r.swim && !r.sit) { drawRemoteSwim(r, x, y); return; }
+  if (r.sit && r.lie) { spr(lieSpr(r.pal), 7, 25, x, y); return; }
+  const dn = !!r.dance && !r.sit, sw = r.moving ? [0, 1, 0, -1][Math.floor(t * 8) % 4] : 0, bl = r.emo === 1 ? (Math.floor(t * 2.2) % 3 === 2 ? true : 2) : r.emo === 2 ? 3 : (t % 4) < .12;
+  const dxo = dn ? ((Math.floor(t * 4) % 2) ? 3 : -3) : 0, dyo = dn ? -Math.abs(Math.sin(t * 8)) * 3 : 0, sw2 = dn ? [0, 1, 0, -1][Math.floor(t * 8) % 4] : sw, face = dn ? 'd' : r.face, flip = r.sit ? r.face === 'l' : (!dn && r.face === 'l');
+  shadow(x + dxo, y, 16, 6); spr(humanSpr(r.pal, face, sw2, !!r.sit, bl, 0, ''), 9, r.sit ? 28 : 24, x + dxo, y + dyo + (r.moving && sw === 0 ? -1 : 0), flip);
+  if (r.item && !r.sit) { if (FOODS[r.item]) drawFoodRemote(r.item, x + dxo, y, r.face); else if (r.item === 'can') { const sg = r.face === 'l' ? -1 : 1; ctx.fillStyle = '#c07a4a'; ctx.fillRect(x + dxo + sg * 11 - 3, y - 30, 6, 9); ctx.fillStyle = '#fff'; ctx.fillRect(x + dxo + sg * 11 - 3, y - 30, 6, 2); } }
 }
 function mpDrawList() {
   const o = []; for (const r of MP.remotes.values()) if (r.scene === mpKey() && !r.hide && r.pal) o.push({k: r.ry, f: () => drawRemote(r)}); return o;
@@ -6065,7 +6104,7 @@ function mpDrawTags() {
   for (const r of MP.remotes.values()) {
     if (r.scene !== mpKey() || r.hide) continue;
     ctx.font = `700 ${10 * kk}px ${FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    const w = ctx.measureText(r.nick).width + 14 * kk, h = 13 * kk, top = r.ry - (r.sit ? 70 : 74) - h - 3, x = r.rx - w / 2;
+    const w = ctx.measureText(r.nick).width + 14 * kk, h = 13 * kk, top = r.ry - (r.mnt >= 0 ? 100 : r.lie && r.sit ? 46 : r.sit ? 70 : 74) - h - 3, x = r.rx - w / 2;
     ctx.fillStyle = 'rgba(22,14,52,.8)'; ctx.beginPath(); ctx.roundRect(x, top, w, h, 4 * kk); ctx.fill(); ctx.strokeStyle = r.color; ctx.lineWidth = 1; ctx.stroke(); ctx.fillStyle = '#f1e8ff'; ctx.fillText(r.nick, r.rx, top + h / 2 + .5);
     if (r.chat && now < r.chat.until) {
       const age = (r.chat.until - now) / 4500, alpha = clamp(Math.min(age * 6, (1 - age) * 8 + .0, 1), 0, 1) || 1;
@@ -6119,7 +6158,7 @@ const frToast = (m, ms) => toast($('toast'), m, ms || 2600);
 function frLabel() { const n = MPF.reqs.size; $('friendsbtn').textContent = '👥 친구 목록' + (n ? ' · 신청 ' + n : ''); }
 function mpFriendsInit(d) {
   MP.pid = d.pid; MPF.friends.clear(); MPF.reqs.clear(); MPF.sent.clear(); $('frstack').innerHTML = '';
-  (d.friends || []).forEach(f => MPF.friends.set(f.pid, f)); (d.requests || []).forEach(r => frAddReq(r)); mpSnapTick.at = 0; mpSnapTick.last = ''; frLabel(); frRender();
+  (d.friends || []).forEach(f => MPF.friends.set(f.pid, f)); (d.requests || []).forEach(r => frAddReq(r)); mpSnapTick.at = 0; mpSnapTick.last = ''; cloudTick.at = Date.now() - 54000; frLabel(); frRender();
 }
 function frAddReq(from) {
   if (!from || !from.pid || MPF.reqs.has(from.pid)) return; MPF.reqs.set(from.pid, from.nick); frLabel();
@@ -6224,6 +6263,255 @@ function mpSnapTick() {
   if (k !== mpSnapTick.last) { mpSnapTick.last = k; mpSocket.emit('shopSnapshot', s); }
 }
 mpFriendHooks();
+/* ---------- ☁️ 저장 · 백업 (클라우드 자동 저장 + 저장 코드 + 백업 문자열) ---------- */
+const BK = {saved: 0, open: false};
+function bakKeys() { const out = [], n = localStorage.length; for (let i = 0; i < n; i++) { const k = localStorage.key(i); if (k && k.indexOf('olta.') === 0 && k !== 'olta.uid') out.push(k); } return out; }
+function bakCollect() { const d = {}; for (const k of bakKeys()) d[k] = localStorage.getItem(k); return d; }
+function bakPack() { return JSON.stringify({v: 1, t: Date.now(), d: bakCollect()}); }
+function bakEncode() { return 'OLTA1:' + btoa(unescape(encodeURIComponent(bakPack()))); }
+function bakDecode(str) {
+  str = String(str || '').trim(); if (str.indexOf('OLTA1:') === 0) str = decodeURIComponent(escape(atob(str.slice(6))));
+  const o = JSON.parse(str); if (!o || typeof o.d !== 'object' || o.d === null) throw new Error('bad'); return o;
+}
+function bakApply(o, uid) {
+  window.__oltaRestoring = true; // 새로고침 직전에 메모리의 옛 데이터가 덮어쓰지 못하게 막음
+  for (const k of bakKeys()) localStorage.removeItem(k);
+  for (const [k, v] of Object.entries(o.d)) if (k.indexOf('olta.') === 0 && k !== 'olta.uid' && typeof v === 'string') localStorage.setItem(k, v);
+  if (uid) store.set('olta.uid', uid);
+  location.reload();
+}
+function cloudTick(force) {
+  if (!mpSocket || !MP.on || !started) return; const now = Date.now(); if (!force && now - (cloudTick.at || 0) < 60000) return; cloudTick.at = now;
+  const data = bakPack(), cmp = data.replace(/"t":\d+,/, ''); if (cmp === cloudTick.last) return;
+  if (data.length > 150 * 1024) { if (!cloudTick.warned) { cloudTick.warned = true; frToast('저장 데이터가 너무 커서 클라우드 백업을 건너뛰었어요', 3000); } return; }
+  mpSocket.emit('saveUpload', {data}, res => { if (res && res.ok) { cloudTick.last = cmp; BK.saved = res.t; bakTimeUi(); } });
+}
+document.addEventListener('visibilitychange', () => { if (document.hidden) cloudTick(true); });
+const bakCodeFmt = () => mpUid().replace(/(.{4})/g, '$1-').replace(/-$/, '');
+function bakTimeUi() { $('baktime').textContent = BK.saved ? '마지막 클라우드 저장: ' + fmtAgo(BK.saved) : '아직 클라우드에 저장되기 전이에요 (접속하고 1분쯤 지나면 자동 저장돼요)'; }
+function bakMsg(m) { $('bakmsg').textContent = m; }
+function openBak() { if (!started || modalX || tr) return; BK.open = true; modalX = true; for (const k in keys) keys[k] = false; player.target = player.pending = null; $('bakcode').textContent = bakCodeFmt(); $('bakin').value = ''; $('baktxt').value = ''; bakMsg(''); bakTimeUi(); $('bak').classList.add('show'); }
+function closeBak() { BK.open = false; modalX = false; $('bak').classList.remove('show'); }
+async function bakCopy(text) {
+  try { if (navigator.clipboard && navigator.clipboard.writeText) { await navigator.clipboard.writeText(text); return true; } } catch (_) {}
+  try { const ta = $('baktxt'); ta.value = text; ta.select(); return !!document.execCommand('copy'); } catch (_) { return false; }
+}
+$('bakbtn').addEventListener('click', openBak); $('bakclose').addEventListener('click', closeBak);
+$('bakcopy').addEventListener('click', async () => { bakMsg((await bakCopy(mpUid())) ? '저장 코드를 복사했어요. 메모해 두세요! (남에게 알려주지 마세요)' : '복사하지 못했어요. 위 코드를 직접 길게 눌러 복사해 주세요'); });
+$('bakexp').addEventListener('click', async () => { const s = bakEncode(); bakMsg((await bakCopy(s)) ? '백업 문자열을 복사했어요 (' + Math.ceil(s.length / 1024) + 'KB). 메모장이나 카톡 "나에게 보내기"에 붙여 두세요' : '복사하지 못했어요. 아래 칸의 글자를 직접 복사해 주세요'); });
+$('bakload').addEventListener('click', () => {
+  const code = $('bakin').value.replace(/[^A-Za-z0-9]/g, ''); if (code.length < 16) { bakMsg('저장 코드를 붙여넣어 주세요'); return; } if (!mpSocket || !MP.on) { bakMsg('서버에 연결되어 있지 않아요. 잠시 후 다시 시도해 주세요'); return; }
+  mpSocket.emit('saveFetch', {code}, res => {
+    if (!res || !res.ok) { bakMsg((res && res.msg) || '불러오지 못했어요'); return; }
+    if (!confirm('이 기기의 현재 데이터가 사라지고, 저장 코드의 데이터(' + fmtAgo(res.t) + ' 저장)로 바뀌어요. 계속할까요?')) return;
+    try { bakApply(JSON.parse(res.data), code); } catch (_) { bakMsg('저장 데이터가 손상되어 불러오지 못했어요'); }
+  });
+});
+$('bakimp').addEventListener('click', () => {
+  let o; try { o = bakDecode($('baktxt').value); } catch (_) { bakMsg('올바른 백업 문자열이 아니에요'); return; }
+  if (!confirm('이 기기의 현재 데이터가 사라지고, 백업 문자열의 데이터로 바뀌어요. 계속할까요?')) return; bakApply(o, null);
+});
+/* ---------- 💘 러브스튜디오 멀티플레이: 서버가 진행자, 모든 브라우저가 같은 방송을 같은 시각에 재생 ---------- */
+const LSN = {local: false, seated: -1, lobby: null};
+const lsNetOn = () => !!(mpSocket && MP.on) && !LSN.local;
+function lsRemote(i) { const p = LS.parts[i]; if (!p || !p.pid) return null; for (const r of MP.remotes.values()) if (r.pid === p.pid && r.scene === 'tw3') return r; return null; }
+function lsHumanPos(i) { const r = lsRemote(i); return r ? [r.rx, r.ry] : lsSeatPt(i); }
+function lsFirePicks() { LS.fired = 1; LS.waitPicks = false; LS.arrows = LS.order.map((i, k) => ({from: i, to: LS.pick[i], at: t + .4 * k, st: 0, n: k})); lsMc('사랑의 작대기 발사~! 💘', 2600); }
+function lsNetSit(idx) {
+  let acked = false;
+  mpSocket.emit('lsSit', {idx}, res => {
+    acked = true;
+    if (!res || !res.ok) { toast($('toast'), (res && res.msg) || '지금은 앉을 수 없어요', 3200); if (player.sit) standUp(); return; }
+    LSN.seated = idx; toast($('toast'), '🎤 미팅 참가자로 등록됐어요! 다른 참가자를 잠시 기다려요', 3000);
+  });
+  setTimeout(() => { if (!acked && LS.st === 'idle' && lsMeSeatIdx() === idx) { LSN.local = true; toast($('toast'), '서버가 아직 구버전이라 혼자 하는 방송으로 진행해요', 3200); } }, 2500);
+}
+function lsNetIdle(me) {
+  if (LSN.seated >= 0 && me !== LSN.seated) { mpSocket.emit('lsLeave', {}); LSN.seated = -1; LSN.lobby = null; $('lsbanner').classList.remove('show'); return; }
+  if (LSN.lobby && LSN.seated >= 0 && t >= (lsNetIdle.at || 0)) {
+    lsNetIdle.at = t + 1; const left = Math.max(0, Math.ceil((LSN.lobby.endsLocal - Date.now()) / 1000)), n = LSN.lobby.seats.filter(Boolean).length;
+    lsBanner('🎤 참가자 ' + n + '/6 · ' + left + '초 뒤 시작! 빈 자리는 외계인 친구들이 와요', 1600);
+  }
+}
+function lsNetFill(d) {
+  const my = lsMeSeatIdx(), me = (my >= 0 && d.roster[my] && d.roster[my].pid === MP.pid) ? my : -1;
+  LSN.lobby = null; LSN.seated = me; $('lsbanner').classList.remove('show');
+  LS.net = true; LS.me = me; LS.finalScores = null; LS.scoresShown = false; LS.askPending = false; LS.startAtT = 0; LS.pendingPicks = null; LS.waitPicks = false; LS.netT0 = t;
+  LS.parts = d.roster.map((r, i) => ({me: i === me, human: !!r.h, pid: r.pid || '', name: r.name || '손님', intro: r.intro || '', team: i < 3 ? 'A' : 'B'}));
+  LS.mv = [null, null, null, null, null, null]; let k = 0;
+  for (let i = 0; i < 6; i++) {
+    const n = lsNpc(i), [sx, sy] = lsSeatPt(i); if (LS.parts[i].human) { Object.assign(n, {scene: 'ls_off', moving: false, sit: false, dance: false}); continue; }
+    const ex = 250 + Math.random() * 60; Object.assign(n, {scene: 'tw3', x: ex, y: 366, sit: false, face: 'u', dance: false, moving: true}); LS.mv[i] = {t0: t + k * .35, dur: 1.5 + Math.random() * .6, x0: ex, y0: 366, x1: sx, y1: sy, arrive: true}; k++;
+  }
+  LS.st = 'fill'; lsMc('참가자가 모이고 있어요! 외계인 친구들이 달려와요~ 🛸', 3000); tone(784, 0, .1, .04); tone(1046, .1, .12, .04);
+}
+function lsNetQuitted(d) {
+  if (!LS.net || LS.st === 'idle' || !d) return; const i = d.idx, p = LS.parts[i]; if (!p || p.me) return;
+  if (!p.human) { if (d.name) p.name = d.name; if (d.intro) p.intro = d.intro; return; } // 내가 직접 그만둔 자리: 이름만 서버가 정한 대로 맞춤(위치는 그대로)
+  const r = lsRemote(i), n = lsNpc(i), pre = LS.st === 'fill' || LS.st === 'ready' || LS.st === 'asking' || LS.st === 'waitStart', [sx, sy] = (r && !pre) ? [r.rx, r.ry] : lsSeatPt(i);
+  Object.assign(n, {scene: 'tw3', x: sx, y: sy, sit: pre, face: i < 3 ? 'r' : 'l', dance: false, moving: false});
+  p.human = false; p.pid = ''; p.name = d.name || p.name; p.intro = d.intro || p.intro || '잘 부탁드려요!'; LS.mv[i] = null;
+}
+function lsApplyPicks(d) { LS.pick = d.picks.slice(0, 6); if (Array.isArray(d.scores)) LS.score = d.scores.slice(0, 6); LS.pendingPicks = null; $('lspick').classList.remove('show'); lsFirePicks(); }
+function lsNetTick() {
+  if (LS.finalScores && LS.st === 'pick' && !LS.scoresShown) { LS.scoresShown = true; LS.score = LS.finalScores.slice(); }
+  if (LS.askPending && LS.st === 'ready') { LS.askPending = false; if (LS.me >= 0) openLsIntro(); else lsMc('참가자들이 한 줄 소개를 쓰고 있어요 ✍️', 4000); }
+  if (LS.startAtT && t >= LS.startAtT && (LS.st === 'waitStart' || LS.st === 'asking' || LS.st === 'ready')) { LS.startAtT = 0; lsBegin(); }
+  if (LS.pendingPicks && LS.st === 'pick' && !LS.fired && t >= LS.lockAt) lsApplyPicks(LS.pendingPicks);
+  if (LS.waitPicks && !LS.fired && t > LS.lockAt + 8) { for (let i = 0; i < 6; i++) if (i !== LS.me) LS.pick[i] = lsBotPick(i); lsFirePicks(); }
+  if ((LS.st === 'fill' || LS.st === 'ready' || LS.st === 'asking' || LS.st === 'waitStart') && t - LS.netT0 > 70) lsAbort();
+}
+function lsNetHooks() {
+  const s = mpSocket; if (!s) return;
+  s.on('lsLobby', d => { if (!d) return; if (d.cancel) { LSN.lobby = null; return; } LSN.lobby = {seats: d.seats || [], endsLocal: Date.now() + ((d.endsAt || 0) - (d.now || 0))}; });
+  s.on('lsFill', d => { if (!d || !Array.isArray(d.roster) || d.roster.length !== 6 || cur !== 'tw3' || tr || LS.st !== 'idle' || LSN.local) return; lsNetFill(d); });
+  s.on('lsAsk', () => { if (LS.net && LS.st !== 'idle') LS.askPending = true; });
+  s.on('lsStart', d => {
+    if (!LS.net || LS.st === 'idle' || !d || !Array.isArray(d.roster)) return; d.roster.forEach((r, i) => { const p = LS.parts[i]; if (p && r) { if (r.name) p.name = r.name; if (r.intro) p.intro = r.intro; } });
+    $('lsintro').classList.remove('show'); LS.askPending = false; if (LS.st === 'asking' || LS.st === 'ready' || LS.st === 'fill') LS.st = 'waitStart';
+    LS.startAtT = t + Math.max(0, ((d.startAt || 0) - (d.now || 0)) / 1000); lsMc('곧 방송이 시작돼요! 🎬', 1500);
+  });
+  s.on('lsScores', d => { if (LS.net && LS.st !== 'idle' && d && Array.isArray(d.scores)) { LS.finalScores = d.scores.slice(0, 6); if (LS.st === 'pick' || LS.st === 'result') LS.score = LS.finalScores.slice(); } });
+  s.on('lsPicks', d => { if (LS.net && LS.st !== 'idle' && d && Array.isArray(d.picks) && d.picks.length === 6) LS.pendingPicks = d; });
+  s.on('lsQuitted', lsNetQuitted);
+  s.on('lsEnd', () => { LSN.lobby = null; });
+  s.on('disconnect', () => { if (LS.net) lsAbort(); LSN.seated = -1; LSN.lobby = null; });
+}
+lsNetHooks();
+/* ---------- 🟣 오목 게임기 (게임센터 2층): 외계인(AI)과 대결 · 주민(다른 접속자)과 대결 ---------- */
+const OMN = 15, OM_DIRS = [[1, 0], [0, 1], [1, 1], [1, -1]];
+const OM = {open: false, mode: 'menu', b: [], turn: 0, me: 0, over: false, winner: -2, last: null, line: null, sel: null, id: '', opp: '', turnEnd: 0, aiAt: 0, waitT0: 0, moves: 0, pending: false, txtT: 0};
+const omIdx = (x, y) => y * OMN + x, omIn = (x, y) => x >= 0 && y >= 0 && x < OMN && y < OMN;
+function omWinLine(b, x, y, who) {
+  for (const [dx, dy] of OM_DIRS) {
+    const line = [[x, y]];
+    for (let s = 1; s < OMN; s++) { const nx = x + dx * s, ny = y + dy * s; if (!omIn(nx, ny) || b[omIdx(nx, ny)] !== who) break; line.push([nx, ny]); }
+    for (let s = 1; s < OMN; s++) { const nx = x - dx * s, ny = y - dy * s; if (!omIn(nx, ny) || b[omIdx(nx, ny)] !== who) break; line.unshift([nx, ny]); }
+    if (line.length >= 5) return line;
+  }
+  return null;
+}
+// ---- 외계인(AI): 모양(5목·열린4·4·열린3…) 점수로 공격과 수비를 함께 계산 ----
+const OM_PAT = new Map(); [['xxxxx', 100000], ['.xxxx.', 10000], ['xxxx.', 1200], ['.xxxx', 1200], ['xxx.x', 1200], ['x.xxx', 1200], ['xx.xx', 1200], ['.xxx.', 900], ['.xx.x.', 900], ['.x.xx.', 900],
+  ['xxx..', 90], ['..xxx', 90], ['xx.x.', 90], ['.x.xx', 90], ['x.xx.', 90], ['.xx.x', 90], ['x..xx', 90], ['xx..x', 90], ['x.x.x', 90], ['.xx..', 70], ['..xx.', 70], ['.x.x.', 70], ['xx...', 12], ['...xx', 12], ['x.x..', 12], ['..x.x', 12], ['x..x.', 12], ['.x..x', 12]].forEach(([k, v]) => OM_PAT.set(k, v));
+function omPat(b, x, y, dx, dy, who) {
+  let s = ''; for (let k = -4; k <= 4; k++) { const nx = x + dx * k, ny = y + dy * k; s += k === 0 ? 'x' : !omIn(nx, ny) ? 'o' : b[omIdx(nx, ny)] === who ? 'x' : b[omIdx(nx, ny)] < 0 ? '.' : 'o'; }
+  let best = 3; for (const len of [5, 6]) for (let st = Math.max(0, 5 - len); st <= 4 && st + len <= 9; st++) { const v = OM_PAT.get(s.substr(st, len)); if (v && v > best) best = v; }
+  return best;
+}
+const omCellScore = (b, x, y, who) => OM_DIRS.reduce((a, [dx, dy]) => a + omPat(b, x, y, dx, dy, who), 0);
+function omAiMove(b, ai) {
+  const hu = 1 - ai, cand = []; let any = false;
+  for (let y = 0; y < OMN; y++) for (let x = 0; x < OMN; x++) { if (b[omIdx(x, y)] >= 0) { any = true; continue; } let near = false; for (let dy = -2; dy <= 2 && !near; dy++) for (let dx = -2; dx <= 2; dx++) { const nx = x + dx, ny = y + dy; if (omIn(nx, ny) && b[omIdx(nx, ny)] >= 0) { near = true; break; } } if (near) cand.push([x, y]); }
+  if (!any) return [7, 7]; let best = null, bs = -1;
+  for (const [x, y] of cand) { const sc = omCellScore(b, x, y, ai) + omCellScore(b, x, y, hu) * .92 + (7 - Math.max(Math.abs(x - 7), Math.abs(y - 7))) * .6 + Math.random() * 2; if (sc > bs) { bs = sc; best = [x, y]; } }
+  return best || [7, 7];
+}
+// ---- 게임 진행 ----
+function omReset(mode) { OM.b = new Array(OMN * OMN).fill(-1); OM.turn = 0; OM.over = false; OM.winner = -2; OM.last = null; OM.line = null; OM.sel = null; OM.moves = 0; OM.mode = mode; OM.aiAt = 0; OM.pending = false; OM.msg = ''; }
+function omPlace(x, y, who) { OM.b[omIdx(x, y)] = who; OM.last = [x, y]; OM.moves++; OM.sel = null; tone(who === 0 ? 392 : 659, 0, .08, .05); tone(who === 0 ? 523 : 880, .04, .06, .03); return omWinLine(OM.b, x, y, who); }
+function omEnd(winner, line, why) {
+  OM.over = true; OM.winner = winner; OM.line = line || null; OM.sel = null; OM.aiAt = 0; let msg;
+  if (winner === -1) msg = '무승부예요! 🤝';
+  else if (winner === OM.me) { const rw = OM.mode === 'ai' ? 10 : 30; addCoins(rw); msg = (why === 'left' ? '상대가 나갔어요! ' : why === 'timeout' ? '상대 시간 초과! ' : '') + '승리! 🎉 (+' + rw + 'G)'; [784, 988, 1318, 1568].forEach((f, i) => tone(f, i * .09, .25, .05)); }
+  else { msg = (why === 'timeout' ? '시간 초과… ' : '') + '아쉽게 졌어요 😢 다시 도전해 봐요!'; tone(262, 0, .35, .05); }
+  OM.msg = msg; omShow();
+}
+function omSelect(x, y) {
+  if (!OM.open || OM.over || (OM.mode !== 'ai' && OM.mode !== 'human') || OM.turn !== OM.me || OM.pending || !omIn(x, y) || OM.b[omIdx(x, y)] >= 0) return false;
+  if (OM.sel && OM.sel[0] === x && OM.sel[1] === y) return omConfirm();
+  OM.sel = [x, y]; tone(660, 0, .04, .03); omShow(); return true;
+}
+function omConfirm() {
+  if (!OM.sel || OM.over || OM.turn !== OM.me || OM.pending) return false; const [x, y] = OM.sel;
+  if (OM.mode === 'ai') {
+    const line = omPlace(x, y, OM.me); if (line) { omEnd(OM.me, line); return true; } if (OM.moves >= OMN * OMN) { omEnd(-1); return true; }
+    OM.turn = 1 - OM.me; OM.aiAt = t + .6 + Math.random() * .5; omShow(); return true;
+  }
+  if (!mpSocket || !MP.on) return false; OM.pending = true; OM.sel = null; omShow();
+  mpSocket.emit('omokMove', {id: OM.id, x, y}, res => { OM.pending = false; if (!res || !res.ok) { toast($('toast'), (res && res.msg) || '둘 수 없어요', 2200); } omShow(); }); return true;
+}
+function omStartAi() { omReset('ai'); OM.me = 0; OM.opp = '외계인'; OM.msg = ''; omShow(); }
+function omStartHuman() {
+  if (!mpSocket || !MP.on) { toast($('toast'), '서버에 연결되어 있지 않아 주민과 대결할 수 없어요. 외계인과 대결해 보세요!', 3000); return false; }
+  mpSocket.emit('omokQueue', {}, res => { if (!res || !res.ok) { toast($('toast'), (res && res.msg) || '대결을 시작할 수 없어요', 2600); if (OM.mode === 'wait') { OM.mode = 'menu'; omShow(); } return; } });
+  OM.mode = 'wait'; OM.waitT0 = t; omShow(); return true;
+}
+function omOnStart(d) {
+  if (!d) return; if (!OM.open) { if (mpSocket) mpSocket.emit('omokLeave', {}); return; }
+  omReset('human'); OM.id = d.id; OM.me = d.you | 0; OM.opp = (d.opp && d.opp.nick) || '주민'; OM.turn = 0; OM.turnEnd = Date.now() + ((d.turnEnd || 0) - (d.now || 0)); tone(784, 0, .1, .04); tone(1046, .1, .12, .04); omShow();
+}
+function omOnMoved(d) {
+  if (!d || d.id !== OM.id || OM.mode !== 'human' || OM.over) return; const line = omPlace(d.x | 0, d.y | 0, d.by | 0);
+  if (d.win) { omEnd(d.win.winner, d.win.line || line, 'win'); return; } if (d.draw) { omEnd(-1); return; }
+  OM.turn = d.turn | 0; OM.turnEnd = Date.now() + ((d.turnEnd || 0) - (d.now || 0)); omShow();
+}
+function omOnOver(d) { if (!d || d.id !== OM.id || OM.mode !== 'human' || OM.over) return; omEnd(d.winner, d.line, d.reason); }
+function openOmok() {
+  if (OM.open || modalX || tr) return; OM.open = true; modalX = true; for (const k in keys) keys[k] = false; player.target = player.pending = null; omReset('menu'); omShow(); $('omok').classList.add('show');
+}
+function closeOmok() {
+  if (!OM.open) return; if (mpSocket && (OM.mode === 'wait' || (OM.mode === 'human' && !OM.over))) mpSocket.emit('omokLeave', {});
+  OM.open = false; OM.mode = 'menu'; modalX = false; $('omok').classList.remove('show');
+}
+function omBack() { if (mpSocket && (OM.mode === 'wait' || (OM.mode === 'human' && !OM.over))) mpSocket.emit('omokLeave', {}); omReset('menu'); omShow(); }
+function omShow() {
+  const m = OM.mode; $('ommenu').style.display = m === 'menu' ? 'block' : 'none'; $('omwait').style.display = m === 'wait' ? 'block' : 'none'; $('omplay').style.display = (m === 'ai' || m === 'human') ? 'block' : 'none';
+  if (m !== 'ai' && m !== 'human') return;
+  const myTurn = !OM.over && OM.turn === OM.me, who = OM.me === 0 ? '🟣 보라 돌(선공)' : '⚪ 흰 돌';
+  $('omstat').textContent = OM.over ? OM.msg : (OM.mode === 'ai' ? '👽 외계인 · 나는 ' + who : '🧑‍🚀 ' + OM.opp + ' · 나는 ' + who) + ' — ' + (OM.pending ? '전송 중…' : myTurn ? '내 차례예요' : OM.mode === 'ai' ? '외계인이 생각 중…' : OM.opp + '님 차례예요');
+  $('omplace').disabled = !(myTurn && OM.sel && !OM.pending); $('omplace').style.display = OM.over ? 'none' : 'inline-block'; $('omresign').textContent = OM.over ? '메뉴로' : '기권하고 나가기';
+  $('omagain').style.display = OM.over && OM.mode === 'ai' ? 'inline-block' : 'none';
+  $('ommsg').textContent = OM.over ? '' : (myTurn ? (OM.sel ? '같은 곳을 한 번 더 누르거나 [여기에 놓기]!' : '놓고 싶은 곳을 눌러요 (미리보기 → 다시 누르면 놓기)') : '');
+}
+function omDraw() {
+  const q = $('omc').getContext('2d'), W = 330, mg = 15, g = (W - 2 * mg) / (OMN - 1), px = x => mg + x * g;
+  q.setTransform(1, 0, 0, 1, 0, 0); q.clearRect(0, 0, W, W);
+  const bg = q.createLinearGradient(0, 0, W, W); bg.addColorStop(0, '#eadfff'); bg.addColorStop(1, '#cdbcf5'); q.fillStyle = bg; q.fillRect(0, 0, W, W); q.strokeStyle = '#9a82d8'; q.lineWidth = 3; q.strokeRect(1.5, 1.5, W - 3, W - 3);
+  q.strokeStyle = '#8f78c8'; q.lineWidth = 1; q.beginPath(); for (let i = 0; i < OMN; i++) { q.moveTo(px(i), px(0)); q.lineTo(px(i), px(OMN - 1)); q.moveTo(px(0), px(i)); q.lineTo(px(OMN - 1), px(i)); } q.stroke();
+  q.fillStyle = '#7a62c0'; for (const [x, y] of [[3, 3], [3, 11], [7, 7], [11, 3], [11, 11]]) { q.beginPath(); q.arc(px(x), px(y), 2.6, 0, 7); q.fill(); }
+  const stone = (x, y, who, a) => {
+    const cx = px(x), cy = px(y), r = g * .44; q.globalAlpha = a; q.fillStyle = 'rgba(60,30,110,.25)'; q.beginPath(); q.arc(cx + 1.2, cy + 1.6, r, 0, 7); q.fill();
+    const gr = q.createRadialGradient(cx - r * .35, cy - r * .35, r * .1, cx, cy, r);
+    if (who === 0) { gr.addColorStop(0, '#c4a8ff'); gr.addColorStop(.55, '#7a4fe0'); gr.addColorStop(1, '#4a28a8'); } else { gr.addColorStop(0, '#ffffff'); gr.addColorStop(.7, '#f1edfa'); gr.addColorStop(1, '#cfc8e6'); }
+    q.fillStyle = gr; q.beginPath(); q.arc(cx, cy, r, 0, 7); q.fill(); q.strokeStyle = who === 0 ? '#3a1f80' : '#a79fc4'; q.lineWidth = 1; q.stroke(); q.globalAlpha = 1;
+  };
+  for (let y = 0; y < OMN; y++) for (let x = 0; x < OMN; x++) { const v = OM.b[omIdx(x, y)]; if (v >= 0) stone(x, y, v, 1); }
+  if (OM.last && !OM.over) { q.strokeStyle = '#ff6fae'; q.lineWidth = 2; q.beginPath(); q.arc(px(OM.last[0]), px(OM.last[1]), g * .2, 0, 7); q.stroke(); }
+  if (OM.line) { q.save(); q.globalCompositeOperation = 'lighter'; for (const [x, y] of OM.line) { q.fillStyle = 'rgba(255,220,120,' + (.35 + .25 * Math.sin(t * 8)) + ')'; q.beginPath(); q.arc(px(x), px(y), g * .62, 0, 7); q.fill(); } q.restore(); q.strokeStyle = '#ffd34e'; q.lineWidth = 3; q.beginPath(); OM.line.forEach(([x, y], i) => i ? q.lineTo(px(x), px(y)) : q.moveTo(px(x), px(y))); q.stroke(); }
+  if (OM.sel && !OM.over) { stone(OM.sel[0], OM.sel[1], OM.me, .55); q.strokeStyle = '#ff6fae'; q.lineWidth = 1.5; const cx = px(OM.sel[0]), cy = px(OM.sel[1]); q.beginPath(); q.moveTo(cx - g * .6, cy); q.lineTo(cx + g * .6, cy); q.moveTo(cx, cy - g * .6); q.lineTo(cx, cy + g * .6); q.stroke(); }
+}
+function omUpdate(dt) {
+  if (!OM.open) return;
+  if (OM.mode === 'ai' && !OM.over && OM.turn !== OM.me && OM.aiAt && t >= OM.aiAt) {
+    OM.aiAt = 0; const ai = 1 - OM.me, [x, y] = omAiMove(OM.b, ai), line = omPlace(x, y, ai);
+    if (line) omEnd(ai, line); else if (OM.moves >= OMN * OMN) omEnd(-1); else { OM.turn = OM.me; omShow(); }
+  }
+  if (OM.mode === 'wait') { const s = Math.floor(t - OM.waitT0), k = $('omwtxt'); if (k._s !== s) { k._s = s; k.textContent = '🧑‍🚀 주민을 기다리는 중… ' + s + '초' + '.'.repeat(1 + s % 3); } $('omwai').style.display = s >= 12 ? 'block' : 'none'; }
+  if (OM.mode === 'human' && !OM.over) { const left = Math.max(0, Math.ceil((OM.turnEnd - Date.now()) / 1000)); if (OM.txtT !== left) { OM.txtT = left; $('omtimer').textContent = '⏱ ' + (OM.turn === OM.me ? '내' : OM.opp + '님') + ' 차례 · ' + left + '초'; } } else if (OM.mode === 'ai') $('omtimer').textContent = ''; else $('omtimer').textContent = '';
+  if (OM.mode === 'ai' || OM.mode === 'human') omDraw();
+}
+$('omai').addEventListener('click', omStartAi); $('omhum').addEventListener('click', omStartHuman); $('omclose').addEventListener('click', closeOmok);
+$('omwcancel').addEventListener('click', omBack); $('omwai').addEventListener('click', () => { if (mpSocket) mpSocket.emit('omokLeave', {}); omStartAi(); });
+$('omplace').addEventListener('click', () => { omConfirm(); }); $('omresign').addEventListener('click', omBack); $('omagain').addEventListener('click', omStartAi);
+$('omc').addEventListener('pointerdown', e => { const r = $('omc').getBoundingClientRect(), k = 330 / (r.width || 330), mg = 15, g = (330 - 2 * mg) / (OMN - 1), x = Math.round(((e.clientX - r.left) * k - mg) / g), y = Math.round(((e.clientY - r.top) * k - mg) / g); omSelect(x, y); e.preventDefault && e.preventDefault(); });
+function omNetHooks() { const s = mpSocket; if (!s) return; s.on('omokStart', omOnStart); s.on('omokMoved', omOnMoved); s.on('omokOver', omOnOver); s.on('disconnect', () => { if (OM.open && (OM.mode === 'wait' || (OM.mode === 'human' && !OM.over))) { toast($('toast'), '서버와 연결이 끊겼어요', 2600); if (OM.mode === 'human') omEnd(-1); else { OM.mode = 'menu'; omShow(); } } }); }
+omNetHooks();
+// ---- 게임센터의 오목 게임기 ----
+function drawOmokMachine() {
+  const c = ctx, x = 310, y = 308; shadow(x, y, 34, 6);
+  c.fillStyle = '#160e33'; c.fillRect(x - 29, y - 84, 58, 84); c.fillStyle = '#7a4fc0'; c.fillRect(x - 27, y - 82, 54, 80); c.fillStyle = 'rgba(255,255,255,.28)'; c.fillRect(x - 27, y - 82, 54, 3);
+  c.fillStyle = '#ffd98a'; c.font = 'bold 8px ' + FONT; c.textAlign = 'center'; c.fillText('🟣 OMOK ⚪', x, y - 89);
+  c.fillStyle = '#0a0620'; c.fillRect(x - 23, y - 76, 46, 42); c.fillStyle = '#e4d6ff'; c.fillRect(x - 21, y - 74, 42, 38);
+  c.strokeStyle = '#8f78c8'; c.lineWidth = 1; c.beginPath(); for (let i = 0; i < 6; i++) { c.moveTo(x - 17 + i * 6.8, y - 70); c.lineTo(x - 17 + i * 6.8, y - 40); c.moveTo(x - 17, y - 70 + i * 6); c.lineTo(x + 17, y - 70 + i * 6); } c.stroke();
+  const seq = [[2, 2, 0], [3, 2, 1], [2, 3, 0], [1, 2, 1], [2, 1, 0], [3, 3, 1], [2, 4, 0], [1, 1, 1], [2, 0, 0]], n = Math.floor(t * 1.3) % (seq.length + 3);
+  for (let i = 0; i < Math.min(n, seq.length); i++) { const [gx, gy, w] = seq[i], sx = x - 17 + gx * 6.8, sy = y - 70 + gy * 6; c.fillStyle = w ? '#fff' : '#7a4fe0'; c.beginPath(); c.arc(sx, sy, 3, 0, 7); c.fill(); c.strokeStyle = w ? '#a79fc4' : '#3a1f80'; c.stroke(); }
+  c.fillStyle = '#2a1c44'; c.fillRect(x - 23, y - 30, 46, 22); c.fillStyle = '#7a4fe0'; c.beginPath(); c.arc(x - 10, y - 20, 4, 0, 7); c.fill(); c.fillStyle = '#fff'; c.beginPath(); c.arc(x + 2, y - 20, 4, 0, 7); c.fill(); c.fillStyle = '#ffd98a'; c.fillRect(x + 12, y - 24, 6, 8);
+  c.save(); c.globalCompositeOperation = 'lighter'; glowC(x, y - 56, 46, .16 + .05 * Math.sin(t * 4), '190,150,255'); c.restore();
+}
+const omDrawList = () => cur === 'tw2' ? [{k: 309, f: drawOmokMachine}] : [];
+acts.push({id: 'omok', scene: 'tw2', label: '🟣 오목 게임기', ax: 310, ay: 336, nr: 46, hit: [281, 224, 340, 312], fn: () => openOmok()});
+TWOBS[2].push({x0: 281, y0: 290, x1: 339, y1: 308});
 document.addEventListener('visibilitychange',saveOps);addEventListener('pagehide',saveOps);
 
 requestAnimationFrame(frame);
